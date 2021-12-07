@@ -7,7 +7,6 @@
       "sslPort": 0
     }
   },
-  
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
@@ -20,7 +19,6 @@
     "Backend": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

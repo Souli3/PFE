@@ -6036,19 +6036,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Souli\\.nuget\\packages\\": {}
+    "C:\\Users\\maxim\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Souli\\Desktop\\PFE\\Backend\\Backend.csproj",
+      "projectUniqueName": "C:\\Users\\maxim\\Documents\\IPL\\Bloc3\\PFE\\Backend\\PFE\\Backend\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "C:\\Users\\Souli\\Desktop\\PFE\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\Souli\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Souli\\Desktop\\PFE\\Backend\\obj\\",
+      "projectPath": "C:\\Users\\maxim\\Documents\\IPL\\Bloc3\\PFE\\Backend\\PFE\\Backend\\Backend.csproj",
+      "packagesPath": "C:\\Users\\maxim\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\maxim\\Documents\\IPL\\Bloc3\\PFE\\Backend\\PFE\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Souli\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\maxim\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
