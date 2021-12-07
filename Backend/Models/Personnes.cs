@@ -13,6 +13,8 @@ namespace Backend.Models
         public int Id { get; set; }
         [Column("nom")]
         public String Name { get; set; }
+        [Column("mdp")]
+        public String MotDePasse { get; set; }
 
     }
 }

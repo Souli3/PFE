@@ -1,6 +1,7 @@
 using Backend.Data;
 using Backend.Logic;
 using Backend.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +15,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Backend.Authentification;
 
 namespace Backend
 {
@@ -34,10 +38,30 @@ namespace Backend
             services.AddDbContext<DataContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), options=>options.SetPostgresVersion(9,6)));
             services.AddScoped<IDataContext>(porvider => porvider.GetService<DataContext>());
             services.AddScoped<IPersonnesLogic, PersonnesLogic>();
+            services.AddScoped<IRegisterLogic, RegisterLogic>();
+            services.AddScoped<IRegisterServices, RegisterServices>();
             services.AddScoped<IPersonnesServices, PersonnesServices>();
             services.AddControllers();
+            services.AddAuthentication(authOption =>
+            {
+                authOption.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authOption.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(jwtOptions =>
+            {
+                var key = Configuration.GetValue<String>("JwtConfig:Key");
+                var keyBytes = Encoding.ASCII.GetBytes(key);
+                jwtOptions.SaveToken = true;
+                jwtOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+                    ValidateLifetime = true,
+                    ValidateAudience=false,
+                    ValidateIssuer=false
+
+                };
+            });
+            services.AddScoped(typeof(IJwtTokenManager), typeof(JwtTokenManager));
             
-            ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +79,8 @@ namespace Backend
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

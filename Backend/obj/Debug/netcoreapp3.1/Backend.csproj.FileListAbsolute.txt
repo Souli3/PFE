@@ -45,3 +45,10 @@ C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\System.Web.Http.Cors.
 C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Users\Souli\Desktop\PFE\Backend\obj\Debug\netcoreapp3.1\Backend.csproj.AssemblyReference.cache
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll

@@ -1,6 +1,7 @@
 ﻿using Backend.Data;
 using Backend.Logic;
 using Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class PersonnesController: ControllerBase
