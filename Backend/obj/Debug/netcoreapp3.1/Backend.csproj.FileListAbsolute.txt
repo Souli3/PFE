@@ -23,7 +23,6 @@ C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Npgsql.EntityFramewor
 C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\System.Collections.Immutable.dll
 C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\System.ComponentModel.Annotations.dll
 C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\System.Diagnostics.DiagnosticSource.dll
-C:\Users\Souli\Desktop\PFE\Backend\obj\Debug\netcoreapp3.1\Backend.csproj.AssemblyReference.cache
 C:\Users\Souli\Desktop\PFE\Backend\obj\Debug\netcoreapp3.1\Backend.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Souli\Desktop\PFE\Backend\obj\Debug\netcoreapp3.1\Backend.AssemblyInfoInputs.cache
 C:\Users\Souli\Desktop\PFE\Backend\obj\Debug\netcoreapp3.1\Backend.AssemblyInfo.cs
@@ -39,3 +38,10 @@ C:\Users\Souli\Desktop\PFE\Backend\obj\Debug\netcoreapp3.1\Backend.pdb
 C:\Users\Souli\Desktop\PFE\Backend\obj\Debug\netcoreapp3.1\Backend.genruntimeconfig.cache
 C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Humanizer.dll
 C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\System.Web.Cors.dll
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\System.Web.Http.dll
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\System.Web.Http.Cors.dll
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\Souli\Desktop\PFE\Backend\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Users\Souli\Desktop\PFE\Backend\obj\Debug\netcoreapp3.1\Backend.csproj.AssemblyReference.cache
