@@ -14,6 +14,6 @@ namespace Backend.Data
 
         }
 
-        public DbSet<Personnes> Personnes { get; set; }
+        public DbSet<Membre> Membres { get; set; }
     }
 }
