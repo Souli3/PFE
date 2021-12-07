@@ -10,7 +10,7 @@ namespace Backend.Data
 {
     public interface IDataContext
     {
-        DbSet<Personnes> Personnes { get; set; }
+        DbSet<Membre> Membres { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

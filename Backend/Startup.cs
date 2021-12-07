@@ -35,12 +35,12 @@ namespace Backend
         {
             //services.AddCors();
             //services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithMethods("GET")));
-            services.AddDbContext<DataContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), options=>options.SetPostgresVersion(9,6)));
+            services.AddDbContext<DataContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), options => options.SetPostgresVersion(9, 6)));
             services.AddScoped<IDataContext>(porvider => porvider.GetService<DataContext>());
-            services.AddScoped<IPersonnesLogic, PersonnesLogic>();
+            services.AddScoped<IMembresLogic, MemberLogic>();
             services.AddScoped<IRegisterLogic, RegisterLogic>();
             services.AddScoped<IRegisterServices, RegisterServices>();
-            services.AddScoped<IPersonnesServices, PersonnesServices>();
+            services.AddScoped<IMembreServices, MembreServices>();
             services.AddControllers();
             services.AddAuthentication(authOption =>
             {
@@ -69,8 +69,13 @@ namespace Backend
         {
             //ngrok http localhost:26934 -host-header="localhost:5000"
             app.UseCors(
-                options => options.WithOrigins(Configuration["Domains:FrontEnd"]).AllowAnyMethod().AllowAnyHeader()
-            );
+                options =>
+                {
+                    options.WithOrigins(Configuration["Domains:FrontEnd"]).AllowAnyMethod().AllowAnyHeader();
+                    options.WithOrigins("https://frontend-dev-pfe.herokuapp.com").AllowAnyMethod().AllowAnyHeader();
+                    options.WithOrigins("https://frontend-prod-pfe.herokuapp.com").AllowAnyMethod().AllowAnyHeader();
+                }
+            ); 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

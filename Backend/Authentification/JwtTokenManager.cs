@@ -20,9 +20,9 @@ namespace Backend.Authentification
             _configuration = configuration;
             _dataContext = dataContext;
         }
-        public string Authenticate(string userName, string password)
+        public string Authenticate(string email, string password)
         {
-            if (!_dataContext.Personnes.Any(x => x.Name.Equals(userName) && x.MotDePasse.Equals(password))) return null;
+            if (!_dataContext.Membres.Any(x => x.Email.Equals(email) && x.MotDePasse.Equals(password))) return null;
 
             var keyBytes = Encoding.ASCII.GetBytes(_configuration["JwtConfig:Key"]);
 
@@ -32,7 +32,7 @@ namespace Backend.Authentification
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, userName)
+                    new Claim(ClaimTypes.NameIdentifier, email)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)

@@ -9,7 +9,7 @@ namespace Backend.Logic
 {
     public interface IRegisterLogic
     {
-        public Task<Personnes> Register(Personnes personnes);
+        public Task<Membre> Register(Membre membre);
     }
     public class RegisterLogic : IRegisterLogic
     {
@@ -18,11 +18,11 @@ namespace Backend.Logic
         {
             _registerServices = registerServices;
         }
-        public async Task<Personnes> Register(Personnes personnes)
+        public async Task<Membre> Register(Membre membre)
         {
-            Personnes personneInscrite = await _registerServices.Register(personnes);
+            Membre membreInscrit = await _registerServices.Register(membre);
 
-            return personneInscrite;
+            return membreInscrit;
         }
     }
 }

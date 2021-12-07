@@ -23,22 +23,22 @@ namespace Backend.Controllers
             _registerLogic = registerLogic;
         }
         [AllowAnonymous]
-        [HttpGet]
-        public IActionResult Login(Personnes personnes)
+        [HttpPost("login")]
+        public IActionResult Login(Membre membres)
         {
-            var token = _jwtTokenManager.Authenticate(personnes.Name, personnes.MotDePasse);
+            var token = _jwtTokenManager.Authenticate(membres.Email, membres.MotDePasse);
             if (string.IsNullOrEmpty(token)) return Unauthorized();
             return Ok(token);
         }
         [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> Register(Personnes personnes)
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(Membre membres)
         {
-            Personnes personneInscrite = await _registerLogic.Register(personnes);
-            if (personneInscrite == null) return BadRequest();
+            Membre membresInscrite = await _registerLogic.Register(membres);
+            if (membresInscrite == null) return BadRequest();
 
 
-            var token = _jwtTokenManager.Authenticate(personneInscrite.Name, personneInscrite.MotDePasse);
+            var token = _jwtTokenManager.Authenticate(membresInscrite.Email, membresInscrite.MotDePasse);
             if (string.IsNullOrEmpty(token)) return Unauthorized();
             return Ok(token);
         }

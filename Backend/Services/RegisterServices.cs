@@ -9,7 +9,7 @@ namespace Backend.Services
 {
     public interface IRegisterServices
     {
-        Task<Personnes> Register(Personnes personnes);
+        Task<Membre> Register(Membre membre);
     }
 
         public class RegisterServices : IRegisterServices
@@ -19,11 +19,12 @@ namespace Backend.Services
         {
             _dataContext = dataContext;
         }
-        public async Task<Personnes> Register(Personnes personnes)
+        public async Task<Membre> Register(Membre membre)
         {
-            _dataContext.Personnes.Add(personnes);
+            membre.Campus_Id = 1;
+            _dataContext.Membres.Add(membre);
             await _dataContext.SaveChangesAsync();
-            return _dataContext.Personnes.Where(x => x.Name.Equals(personnes.Name) && x.MotDePasse.Equals(personnes.MotDePasse)).FirstOrDefault();
+            return _dataContext.Membres.Where(x => x.Email.Equals(membre.Email) && x.MotDePasse.Equals(membre.MotDePasse)).FirstOrDefault();
         }
     }
 }
