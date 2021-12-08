@@ -33,7 +33,9 @@ namespace Backend.Controllers
            
             var token = _jwtTokenManager.Authenticate(membres.Email, membres.MotDePasse);
             if (string.IsNullOrEmpty(token)) return Unauthorized();
-            return Ok(token);
+            membreDB.Token = token;
+            membreDB.MotDePasse = "";
+            return Ok(membreDB);
         }
         [AllowAnonymous]
         [HttpPost("register")]
@@ -46,7 +48,9 @@ namespace Backend.Controllers
 
             var token = _jwtTokenManager.Authenticate(membresInscrite.Email, membresInscrite.MotDePasse);
             if (string.IsNullOrEmpty(token)) return Unauthorized();
-            return Ok(token);
+            membresInscrite.Token = token;
+            membresInscrite.MotDePasse = "";
+            return Ok(membresInscrite);
         }
 
     }

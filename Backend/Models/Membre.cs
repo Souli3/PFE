@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Backend.Models
 {
@@ -12,14 +10,18 @@ namespace Backend.Models
         [Column("membre_id")]
         public int Id { get; set; }
         [Column("email")]
-        public String Email { get; set; }
+        public String Email{ get; set; }
         [Column("mot_de_passe")]
-        public String MotDePasse { get; set; }
+        public string MotDePasse { get; set; }
         [Column("campus_id")]
         public int Campus_Id { get; set; }
         [Column("administrateur")]
         public bool Administrateur { get; set; }
         [Column("banni")]
         public DateTime? Banni { get; set; }
+        [NotMapped]
+        public Adresse Adresse { get; set; }
+        [NotMapped]
+        public String Token { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Backend.Data;
+﻿using Backend.Authentification;
+using Backend.Data;
 using Backend.Logic;
 using Backend.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -18,15 +19,25 @@ namespace Backend.Controllers
     public class MembersController: ControllerBase
     {
         private IMembresLogic _MembreLogic;
-        public MembersController(IMembresLogic MembreLogic)
+        private readonly IJwtTokenManager _jwtTokenManager;
+        public MembersController(IMembresLogic MembreLogic, IJwtTokenManager jwtTokenManager)
         {
             _MembreLogic = MembreLogic;
+            _jwtTokenManager = jwtTokenManager;
         }
-        [HttpGet("{id}")]
-        public ActionResult<Membre> GetMembre(int id)
+        [HttpGet("GetMembre")]
+        public ActionResult<Membre> GetMember()
         {
-            Membre p = _MembreLogic.GetMembre(id);
+            Membre p = _MembreLogic.GetMembre(_jwtTokenManager.DecodeJWTToGetEmail(Request));
+            p.MotDePasse = "";
             return Ok(p);
+        }
+        [HttpPut("UpdateMembre")]
+        public async Task<ActionResult<Membre>> UpdateMember(Membre membre)
+        {
+            if (membre == null || !_jwtTokenManager.DecodeJWTToGetEmail(Request).Equals(membre.Email)) return BadRequest();
+            membre = await _MembreLogic.UpdateMember(membre);
+            return Ok(membre);
         }
         [HttpGet]
         public async Task<ActionResult<List<Membre>>> GetAllMembre()

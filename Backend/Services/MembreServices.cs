@@ -14,6 +14,7 @@ namespace Backend.Services
         Task<List<Membre>> GetAllMembresAsync();
         Task AddMembre(Membre Membre);
         Membre GetMembreByEmail(string email);
+        Task<Membre> UpdateMembre(Membre membre);
     }
     public class MembreServices : IMembreServices
     {
@@ -42,7 +43,20 @@ namespace Backend.Services
         }
         public Membre GetMembreByEmail(string email)
         {
-            return _dataContext.Membres.Where(x=>x.Email.Equals(email)).FirstOrDefault();
+            Membre membre = _dataContext.Membres.Where(x=>x.Email.Equals(email)).FirstOrDefault();
+            membre.Adresse = _dataContext.Adresses.Where(x=> x.Id==membre.Id).FirstOrDefault();
+            return membre;            
+        }
+
+        public async Task<Membre> UpdateMembre(Membre membre)
+        {
+            var membreDB = _dataContext.Membres.FirstOrDefault(x => x.Email.Equals(membre.Email));
+            membreDB.Campus_Id = membre.Campus_Id;
+            membreDB.MotDePasse = membre.MotDePasse;
+            //_dataContext.Membres.Update(membreDB);
+            
+            await _dataContext.SaveChangesAsync();
+            return membreDB;
         }
     }
 }

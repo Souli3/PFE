@@ -25,10 +25,10 @@ namespace Backend.Logic
         {
             return _membreServices.GetMembreByEmail(membre.Email);
         }
-            public async Task<Membre> Register(Membre membre)
+        public async Task<Membre> Register(Membre membre)
         {
+            if (_membreServices.GetMembreByEmail(membre.Email) != null) return null;
             Membre membreInscrit = await _registerServices.Register(membre);
-
             return membreInscrit;
         }
     }

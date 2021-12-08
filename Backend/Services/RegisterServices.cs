@@ -21,7 +21,6 @@ namespace Backend.Services
         }
         public async Task<Membre> Register(Membre membre)
         {
-            membre.Campus_Id = 1;
             _dataContext.Membres.Add(membre);
             await _dataContext.SaveChangesAsync();
             return _dataContext.Membres.Where(x => x.Email.Equals(membre.Email) && x.MotDePasse.Equals(membre.MotDePasse)).FirstOrDefault();

@@ -9,9 +9,11 @@ namespace Backend.Logic
 {
     public interface IMembresLogic
     {
-        Membre GetMembre(int id);
+        Membre GetMembre(string email);
         Task<List<Membre>> GetAllMembres();
         Task AddMembre(Membre Membres);
+        Task<Membre> UpdateMember(Membre membre);
+
 
     }
     public class MemberLogic : IMembresLogic
@@ -33,9 +35,18 @@ namespace Backend.Logic
             return membres;
         }
 
-        public Membre GetMembre(int id)
+        public Membre GetMembre(string email)
         {
-            return _MembreServices.GetMembre(id);
+            return _MembreServices.GetMembreByEmail(email);
+        }
+
+        public async Task<Membre> UpdateMember(Membre membre)
+        {
+            Membre membreDB = _MembreServices.GetMembreByEmail(membre.Email);
+            if(membre.Campus_Id!=membreDB.Campus_Id) membreDB.Campus_Id = membre.Campus_Id;
+            if(!BCrypt.Net.BCrypt.Verify(membre.MotDePasse, membreDB.MotDePasse)) membreDB.MotDePasse= BCrypt.Net.BCrypt.HashPassword(membre.MotDePasse) ;
+
+            return await _MembreServices.UpdateMembre(membreDB);
         }
     }
 }
