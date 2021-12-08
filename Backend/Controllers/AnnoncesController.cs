@@ -20,7 +20,8 @@ namespace Backend.Controllers
         {
             _AnnonceLogic = AnnonceLogic;
         }
-
+        
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<Annonce>>> GetAllAnnonces()
         {
