@@ -13,6 +13,7 @@ namespace Backend.Services
         Membre GetMembre(int id);
         Task<List<Membre>> GetAllMembresAsync();
         Task AddMembre(Membre Membre);
+        Membre GetMembreByEmail(string email);
     }
     public class MembreServices : IMembreServices
     {
@@ -38,6 +39,10 @@ namespace Backend.Services
         public Membre GetMembre(int id)
         {
             return _dataContext.Membres.Where(x => x.Id == id).FirstOrDefault();
+        }
+        public Membre GetMembreByEmail(string email)
+        {
+            return _dataContext.Membres.Where(x=>x.Email.Equals(email)).FirstOrDefault();
         }
     }
 }

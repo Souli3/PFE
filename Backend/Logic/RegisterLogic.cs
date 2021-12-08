@@ -10,15 +10,22 @@ namespace Backend.Logic
     public interface IRegisterLogic
     {
         public Task<Membre> Register(Membre membre);
+        Membre Login(Membre membre);
     }
     public class RegisterLogic : IRegisterLogic
     {
         private IRegisterServices _registerServices;
-        public RegisterLogic(IRegisterServices registerServices)
+        private IMembreServices _membreServices;
+        public RegisterLogic(IRegisterServices registerServices, IMembreServices membreServices)
         {
             _registerServices = registerServices;
+            _membreServices = membreServices;
         }
-        public async Task<Membre> Register(Membre membre)
+        public Membre Login(Membre membre)
+        {
+            return _membreServices.GetMembreByEmail(membre.Email);
+        }
+            public async Task<Membre> Register(Membre membre)
         {
             Membre membreInscrit = await _registerServices.Register(membre);
 
