@@ -41,6 +41,8 @@ namespace Backend
             services.AddScoped<IRegisterLogic, RegisterLogic>();
             services.AddScoped<IRegisterServices, RegisterServices>();
             services.AddScoped<IMembreServices, MembreServices>();
+            services.AddScoped<IAnnonceLogic, AnnonceLogic>();
+            services.AddScoped<IAnnonceServices, AnnonceService>();
             services.AddControllers();
             services.AddAuthentication(authOption =>
             {

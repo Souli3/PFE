@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace Backend.Models
 {
     [Table("medias", Schema = "pfe")]
-    public class Medias
+    public class Media
     {
-        [Column("Media_id")]
+        [Column("media_id")]
         public int Id { get; set; }
-        [Column("Url")]
+        [Column("url")]
         public String Url { get; set; }
-        [Column("Annonce_id")]
+        [Column("annonce_id")]
         public int Annonce_id { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace Backend.Authentification
                 {
                     new Claim(ClaimTypes.NameIdentifier, email)
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(30),
+                Expires = DateTime.UtcNow.AddDays(14),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
             };
 
