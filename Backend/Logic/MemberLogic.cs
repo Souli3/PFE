@@ -43,9 +43,12 @@ namespace Backend.Logic
         public async Task<Membre> UpdateMember(Membre membre)
         {
             Membre membreDB = _MembreServices.GetMembreByEmail(membre.Email);
-            if(membre.Campus_Id!=membreDB.Campus_Id) membreDB.Campus_Id = membre.Campus_Id;
-            if(!BCrypt.Net.BCrypt.Verify(membre.MotDePasse, membreDB.MotDePasse)) membreDB.MotDePasse= BCrypt.Net.BCrypt.HashPassword(membre.MotDePasse) ;
-
+            if(membre.Campus_Id!=null && membre.Campus_Id!= 0) { 
+                if(membre.Campus_Id!=membreDB.Campus_Id) membreDB.Campus_Id = membre.Campus_Id;
+            }
+            if (membre.MotDePasse!=null && membre.MotDePasse != "") { 
+                if(!BCrypt.Net.BCrypt.Verify(membre.MotDePasse, membreDB.MotDePasse)) membreDB.MotDePasse= BCrypt.Net.BCrypt.HashPassword(membre.MotDePasse) ;
+            }
             return await _MembreServices.UpdateMembre(membreDB);
         }
     }
