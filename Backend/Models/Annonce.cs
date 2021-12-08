@@ -7,25 +7,25 @@ using System.Threading.Tasks;
 namespace Backend.Models
 {
     [Table("annonces", Schema = "pfe")]
-    public class Annonces
+    public class Annonce
     {
-        [Column("Annonce_id")]
+        [Column("annonce_id")]
         public int Id { get; set; }
-        [Column("Titre")]
+        [Column("titre")]
         public String Titre { get; set; }
-        [Column("Description")]
+        [Column("description")]
         public String Description { get; set; }
-        [Column("Prix")]
+        [Column("prix")]
         public int Prix { get; set; }
-        [Column("Etat")]
+        [Column("etat")]
         public char Etat { get; set; }
-        [Column("Genre")]
+        [Column("genre")]
         public char Genre { get; set; }
-        [Column("Vendeur_id")]
+        [Column("vendeur_id")]
         public int Vendeur_id { get; set; }
-        [Column("Categorie_id")]
+        [Column("categorie_id")]
         public int Categorie_id { get; set; }
-        [Column("Acheteur_id")]
+        [Column("acheteur_id")]
         public int Acheteur_id { get; set; }
     }
 }

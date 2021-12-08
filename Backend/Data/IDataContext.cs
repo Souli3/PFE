@@ -11,6 +11,7 @@ namespace Backend.Data
     public interface IDataContext
     {
         DbSet<Membre> Membres { get; set; }
+        DbSet<Annonce> Annonces { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

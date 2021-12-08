@@ -13,7 +13,8 @@ namespace Backend.Data
         {
 
         }
-
         public DbSet<Membre> Membres { get; set; }
+
+        public DbSet<Annonce> Annonces { get; set; }
     }
 }

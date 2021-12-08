@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 namespace Backend.Models
 {
     [Table("adresses", Schema = "pfe")]
-    public class Adresses
+    public class Adresse
     {
-        [Column("Adresse_id")]
+        [Column("adresse_id")]
         public int Id { get; set; }
-        [Column("Rue")]
+        [Column("rue")]
         public String Rue { get; set; }
-        [Column("Numero")]
+        [Column("numero")]
         public String Numero { get; set; }
-        [Column("Ville")]
+        [Column("ville")]
         public String Ville { get; set; }
-        [Column("Code_postal")]
+        [Column("code_postal")]
         public String Code_postal { get; set; }
-        [Column("Pays")]
+        [Column("pays")]
         public String Pays { get; set; }
     }
 }
