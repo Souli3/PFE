@@ -47,8 +47,14 @@ namespace Backend.Controllers
             {
                 return NotFound(e.Message);
             }
-            
             return Ok(annonces);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddAnnonce(Annonce annonce)
+        {
+            Annonce newAnnonce = await _AnnonceLogic.AddAnnonce(annonce);
+            return Ok(newAnnonce);
         }
     }
 }
