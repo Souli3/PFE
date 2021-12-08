@@ -53,8 +53,8 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<ActionResult> AddAnnonce(Annonce annonce)
         {
-            await _AnnonceLogic.AddAnnonce(annonce);
-            return Ok(annonce);
+            Annonce newAnnonce = await _AnnonceLogic.AddAnnonce(annonce);
+            return Ok(newAnnonce);
         }
     }
 }

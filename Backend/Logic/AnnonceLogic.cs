@@ -11,7 +11,7 @@ namespace Backend.Logic
     {
         Task<List<Annonce>> GetAllAnnonces();
         Task<List<Annonce>> GetAnnoncesByEmail(String email);
-        Task AddAnnonce(Annonce annonce);
+        Task<Annonce> AddAnnonce(Annonce annonce);
     }
     public class AnnonceLogic : IAnnonceLogic
     {
@@ -23,9 +23,9 @@ namespace Backend.Logic
             _MembreServices = MembreServices;
         }
 
-        public async Task AddAnnonce(Annonce annonce)
+        public async Task<Annonce> AddAnnonce(Annonce annonce)
         {
-            await _AnnonceServices.AddAnnonce(annonce);
+            return await _AnnonceServices.AddAnnonce(annonce);
         }
 
         public async Task<List<Annonce>> GetAllAnnonces()

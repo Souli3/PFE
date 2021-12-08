@@ -12,7 +12,7 @@ namespace Backend.Services
     {
         Task<List<Annonce>> GetAllAnnoncesAsync();
         Task<List<Annonce>> GetAnnoncesById(int id);
-        Task AddAnnonce(Annonce annonce);
+        Task<Annonce> AddAnnonce(Annonce annonce);
     }
     public class AnnonceService : IAnnonceServices
     {
@@ -22,10 +22,11 @@ namespace Backend.Services
             _dataContext = dataContext;
         }
 
-        public async Task AddAnnonce(Annonce annonce)
+        public async Task<Annonce> AddAnnonce(Annonce annonce)
         {
-            _dataContext.Annonces.Add(annonce);
+            Annonce newAnnonce = _dataContext.Annonces.Add(annonce).Entity;
             await _dataContext.SaveChangesAsync();
+            return newAnnonce;
         }
 
         public async Task<List<Annonce>> GetAllAnnoncesAsync()
