@@ -11,8 +11,9 @@ namespace Backend.Services
     public interface IAnnonceServices
     {
         Task<List<Annonce>> GetAllAnnoncesAsync();
-        Task<List<Annonce>> GetAnnoncesById(int id);
+        Task<List<Annonce>> GetAnnoncesByIdVendeur(int id);
         Task<Annonce> AddAnnonce(Annonce annonce);
+        Annonce GetAnnonceById(int id);
     }
     public class AnnonceService : IAnnonceServices
     {
@@ -34,9 +35,14 @@ namespace Backend.Services
             return await _dataContext.Annonces.ToListAsync();
         }
 
-        public async Task<List<Annonce>> GetAnnoncesById(int id)
+        public Annonce GetAnnonceById(int id)
         {
-            return await _dataContext.Annonces.Where(x => x.Vendeur_id == id).ToListAsync();
+            return _dataContext.Annonces.Where(annonce => annonce.Id == id).FirstOrDefault();
+        }
+
+        public async Task<List<Annonce>> GetAnnoncesByIdVendeur(int id)
+        {
+            return await _dataContext.Annonces.Where(annonce => annonce.Vendeur_id == id).ToListAsync();
         }
     }
 }

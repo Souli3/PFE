@@ -25,13 +25,20 @@ namespace Backend.Controllers
             _AnnonceLogic = AnnonceLogic;
             _jwtTokenManager = jwtTokenManager;
         }
-        
+
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<Annonce>>> GetAllAnnonces()
         {
             List<Annonce> annonces = await _AnnonceLogic.GetAllAnnonces();
             return Ok(annonces);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<Annonce> GetAnnonceById(int id)
+        {
+            Annonce annonce = _AnnonceLogic.GetAnnonceById(id);
+            return Ok(annonce);
         }
 
         [HttpGet("email")]

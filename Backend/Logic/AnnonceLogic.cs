@@ -12,6 +12,7 @@ namespace Backend.Logic
         Task<List<Annonce>> GetAllAnnonces();
         Task<List<Annonce>> GetAnnoncesByEmail(String email);
         Task<Annonce> AddAnnonce(Annonce annonce);
+        Annonce GetAnnonceById(int id);
     }
     public class AnnonceLogic : IAnnonceLogic
     {
@@ -33,6 +34,11 @@ namespace Backend.Logic
             return await _AnnonceServices.GetAllAnnoncesAsync();
         }
 
+        public Annonce GetAnnonceById(int id)
+        {
+            return _AnnonceServices.GetAnnonceById(id); 
+        }
+
         public async Task<List<Annonce>> GetAnnoncesByEmail(String email)
         {
             Membre membre = _MembreServices.GetMembreByEmail(email);
@@ -40,7 +46,7 @@ namespace Backend.Logic
             {
                 throw new Exception("Member not found");
             }
-            return await _AnnonceServices.GetAnnoncesById(membre.Id);
+            return await _AnnonceServices.GetAnnoncesByIdVendeur(membre.Id);
         }
     }
 }
