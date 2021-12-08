@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Net.Http.Headers;
 
 namespace Backend.Authentification
 {
@@ -15,10 +17,12 @@ namespace Backend.Authentification
     {
         private readonly IConfiguration _configuration;
         private IDataContext _dataContext;
+        private JwtSecurityTokenHandler _handler;
         public JwtTokenManager(IConfiguration configuration, IDataContext dataContext)
         {
             _configuration = configuration;
             _dataContext = dataContext;
+            _handler = new JwtSecurityTokenHandler();
         }
         public string Authenticate(string email, string password)
         {
@@ -41,6 +45,14 @@ namespace Backend.Authentification
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        public string DecodeJWTToGetEmail(HttpRequest request)
+        {
+            String jwt = request.Headers[HeaderNames.Authorization];
+            String jwtCleaned = jwt.Remove(0, 6).Trim();
+            var token = _handler.ReadJwtToken(jwtCleaned);
+            return token.Claims.First(claim => claim.Type == "nameid").Value;
         }
     }
 }
