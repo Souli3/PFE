@@ -14,6 +14,6 @@ namespace Backend.Models
         [Column("nom")]
         public String Nom { get; set; }
         [Column("sur_categorie_id")]
-        public int Sur_categorie_id { get; set; }
+        public int? Sur_categorie_id { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace Backend.Models
         [Column("description")]
         public String Description { get; set; }
         [Column("prix")]
-        public int Prix { get; set; }
+        public int? Prix { get; set; }
         [Column("etat")]
         public char Etat { get; set; }
         [Column("genre")]
@@ -25,7 +25,5 @@ namespace Backend.Models
         public int Vendeur_id { get; set; }
         [Column("categorie_id")]
         public int Categorie_id { get; set; }
-        [Column("acheteur_id")]
-        public int Acheteur_id { get; set; }
     }
 }
