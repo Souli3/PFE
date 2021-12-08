@@ -22,7 +22,7 @@ namespace Backend.Authentification
         }
         public string Authenticate(string email, string password)
         {
-            if (!_dataContext.Membres.Any(x => x.Email.Equals(email) && x.MotDePasse.Equals(password))) return null;
+            if (!_dataContext.Membres.Any(x => x.Email.Equals(email) )) return null;
 
             var keyBytes = Encoding.ASCII.GetBytes(_configuration["JwtConfig:Key"]);
 

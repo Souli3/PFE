@@ -26,6 +26,11 @@ namespace Backend.Controllers
         [HttpPost("login")]
         public IActionResult Login(Membre membres)
         {
+            Membre membreDB = _registerLogic.Login(membres);
+            if (membreDB == null || membreDB.Email == null) return Unauthorized();
+
+            if (!BCrypt.Net.BCrypt.Verify(membres.MotDePasse, membreDB.MotDePasse)) return Unauthorized();
+           
             var token = _jwtTokenManager.Authenticate(membres.Email, membres.MotDePasse);
             if (string.IsNullOrEmpty(token)) return Unauthorized();
             return Ok(token);
@@ -34,6 +39,7 @@ namespace Backend.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(Membre membres)
         {
+            membres.MotDePasse = BCrypt.Net.BCrypt.HashPassword(membres.MotDePasse);
             Membre membresInscrite = await _registerLogic.Register(membres);
             if (membresInscrite == null) return BadRequest();
 
