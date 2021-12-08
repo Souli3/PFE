@@ -44,6 +44,7 @@ namespace Backend.Services
         public Membre GetMembreByEmail(string email)
         {
             Membre membre = _dataContext.Membres.Where(x=>x.Email.Equals(email)).FirstOrDefault();
+            if(membre == null) return null;
             membre.Adresse = _dataContext.Adresses.Where(x=> x.Id==membre.Id).FirstOrDefault();
             return membre;            
         }
