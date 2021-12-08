@@ -20,6 +20,6 @@ namespace Backend.Models
         [Column("administrateur")]
         public bool Administrateur { get; set; }
         [Column("banni")]
-        public DateTime Banni { get; set; }
+        public DateTime? Banni { get; set; }
     }
 }
