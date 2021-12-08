@@ -21,9 +21,9 @@ namespace Backend.Services
         }
         public async Task<Membre> Register(Membre membre)
         {
-            _dataContext.Membres.Add(membre);
+            Membre membre1 =  _dataContext.Membres.Add(membre).Entity;
             await _dataContext.SaveChangesAsync();
-            return _dataContext.Membres.Where(x => x.Email.Equals(membre.Email) && x.MotDePasse.Equals(membre.MotDePasse)).FirstOrDefault();
+            return membre1;
         }
     }
 }
