@@ -53,9 +53,9 @@ namespace Backend.Services
             var membreDB = _dataContext.Membres.FirstOrDefault(x => x.Email.Equals(membre.Email));
             membreDB.Campus_Id = membre.Campus_Id;
             membreDB.MotDePasse = membre.MotDePasse;
-            //_dataContext.Membres.Update(membreDB);
             
             await _dataContext.SaveChangesAsync();
+            membreDB.Adresse =  _dataContext.Adresses.Where(x => x.Id == membreDB.Campus_Id).FirstOrDefault();
             return membreDB;
         }
     }
