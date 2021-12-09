@@ -1,5 +1,6 @@
 ﻿using Backend.Data;
 using Backend.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace Backend.Services
         Task<List<Annonce>> GetAnnoncesByIdVendeur(int id);
         Task<Annonce> AddAnnonce(Annonce annonce);
         Annonce GetAnnonceById(int id);
+        Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce);
+        Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie);
     }
     public class AnnonceService : IAnnonceServices
     {
@@ -32,7 +35,12 @@ namespace Backend.Services
 
         public async Task<List<Annonce>> GetAllAnnoncesAsync()
         {
-            return await _dataContext.Annonces.ToListAsync();
+            return await _dataContext.Annonces.OrderBy(annonce => annonce.Id).ToListAsync();
+        }
+
+        public async Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie)
+        {
+            return await _dataContext.Annonces.Where(annonce => annonce.Categorie_id == categorie.Id).OrderBy(annonce => annonce.Id).ToListAsync();
         }
 
         public Annonce GetAnnonceById(int id)
@@ -43,6 +51,17 @@ namespace Backend.Services
         public async Task<List<Annonce>> GetAnnoncesByIdVendeur(int id)
         {
             return await _dataContext.Annonces.Where(annonce => annonce.Vendeur_id == id).ToListAsync();
+        }
+
+        public async Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce)
+        {
+            Annonce annonceDB = _dataContext.Annonces.Where(a => a.Id == annonce.Id).FirstOrDefault();
+            annonceDB.Titre = annonce.Titre;
+            annonceDB.Description = annonce.Description;
+            annonceDB.Prix = annonce.Prix;
+            annonceDB.Etat = annonce.Etat;
+            await _dataContext.SaveChangesAsync();
+            return annonceDB;
         }
     }
 }

@@ -41,6 +41,14 @@ namespace Backend.Controllers
             return Ok(annonce);
         }
 
+        [AllowAnonymous]
+        [HttpGet("categorie")]
+        public async Task<ActionResult<List<Annonce>>> GetAllAnnoncesByCategorie(Categorie categorie)
+        {
+            List<Annonce> annonces = await _AnnonceLogic.GetAllAnnoncesByCategorie(categorie);
+            return Ok(annonces);
+        }
+
         [HttpGet("email")]
         public async Task<ActionResult<List<Annonce>>> GetAnnoncesByEmail()
         {
@@ -62,6 +70,12 @@ namespace Backend.Controllers
         {
             Annonce newAnnonce = await _AnnonceLogic.AddAnnonce(annonce);
             return Ok(newAnnonce);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce)
+        {
+            return await _AnnonceLogic.UpdateAnnonce(annonce);
         }
     }
 }
