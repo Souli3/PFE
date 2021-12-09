@@ -1,5 +1,6 @@
 ﻿using Backend.Models;
 using Backend.Services;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace Backend.Logic
         Task<List<Annonce>> GetAnnoncesByEmail(String email);
         Task<Annonce> AddAnnonce(Annonce annonce);
         Annonce GetAnnonceById(int id);
+        Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce);
+        Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie);
     }
     public class AnnonceLogic : IAnnonceLogic
     {
@@ -34,6 +37,11 @@ namespace Backend.Logic
             return await _AnnonceServices.GetAllAnnoncesAsync();
         }
 
+        public async Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie)
+        {
+            return await _AnnonceServices.GetAllAnnoncesByCategorie(categorie);
+        }
+
         public Annonce GetAnnonceById(int id)
         {
             return _AnnonceServices.GetAnnonceById(id); 
@@ -47,6 +55,11 @@ namespace Backend.Logic
                 throw new Exception("Member not found");
             }
             return await _AnnonceServices.GetAnnoncesByIdVendeur(membre.Id);
+        }
+
+        public async Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce)
+        {
+            return await _AnnonceServices.UpdateAnnonce(annonce);
         }
     }
 }
