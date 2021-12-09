@@ -21,6 +21,7 @@ namespace Backend.Controllers
             _CategorieLogic = CategorieLogic;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<Categorie>>> GetAllCategories()
         {
