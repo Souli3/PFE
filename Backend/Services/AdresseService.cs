@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace Backend.Services
 {
-    public interface ICategorieService
+    public interface IAdresseService
     {
-        Task<List<Categorie>> GetAllCategories();
+        Task<List<Adresse>> GetAllAdresses();
     }
-    public class CategorieService : ICategorieService
+    public class AdresseService : IAdresseService
     {
         private IDataContext _dataContext;
-        public CategorieService(IDataContext dataContext)
+        public AdresseService(IDataContext dataContext)
         {
             _dataContext = dataContext;
         }
-        public async Task<List<Categorie>> GetAllCategories()
+        public async Task<List<Adresse>> GetAllAdresses()
         {
-            return await _dataContext.Categories.ToListAsync();
+            return await _dataContext.Adresses.ToListAsync();
         }
     }
 }
