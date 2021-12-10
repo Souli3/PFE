@@ -21,15 +21,22 @@ namespace Backend.Logic
     {
         private IAnnonceServices _AnnonceServices;
         private IMembreServices _MembreServices;
-        public AnnonceLogic(IAnnonceServices AnnonceServices, IMembreServices MembreServices)
+        private IAnnonceAdresseService _AnnonceAdresseService;
+        public AnnonceLogic(IAnnonceServices AnnonceServices, IMembreServices MembreServices, IAnnonceAdresseService AnnonceAdresseService)
         {
             _AnnonceServices = AnnonceServices;
             _MembreServices = MembreServices;
+            _AnnonceAdresseService = AnnonceAdresseService;
         }
 
         public async Task<Annonce> AddAnnonce(Annonce annonce)
         {
-            return await _AnnonceServices.AddAnnonce(annonce);
+            Membre membre = _MembreServices.GetMembre(annonce.Vendeur_id);
+            if (membre == null)
+                throw new Exception("This member does not exists");
+            Annonce newAnnonce = await _AnnonceServices.AddAnnonce(annonce);
+            await _AnnonceAdresseService.AddAnnonceAdresse(newAnnonce.Id, membre.Campus_Id);
+            return newAnnonce;
         }
 
         public async Task<List<Annonce>> GetAllAnnonces()
