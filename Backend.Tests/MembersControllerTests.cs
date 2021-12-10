@@ -8,7 +8,7 @@ namespace Backend.Tests
         [Fact]
         public void GetMember()
         {
-            Assert.True(true);
+            Assert.True(false);
         }
     }
 }
