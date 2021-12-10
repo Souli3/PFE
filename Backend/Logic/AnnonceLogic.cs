@@ -16,16 +16,20 @@ namespace Backend.Logic
         Annonce GetAnnonceById(int id);
         Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce);
         Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie);
+        Task<List<Annonce>> GetAnnoncesByCampusName(string campusName);
     }
     public class AnnonceLogic : IAnnonceLogic
     {
         private IAnnonceServices _AnnonceServices;
         private IMembreServices _MembreServices;
+        private IAdresseService _AdresseServices;
         private IAnnonceAdresseService _AnnonceAdresseService;
-        public AnnonceLogic(IAnnonceServices AnnonceServices, IMembreServices MembreServices, IAnnonceAdresseService AnnonceAdresseService)
+        public AnnonceLogic(IAnnonceServices AnnonceServices, IMembreServices MembreServices,
+            IAdresseService AdresseServices, IAnnonceAdresseService AnnonceAdresseService)
         {
             _AnnonceServices = AnnonceServices;
             _MembreServices = MembreServices;
+            _AdresseServices = AdresseServices;
             _AnnonceAdresseService = AnnonceAdresseService;
         }
 
@@ -33,7 +37,7 @@ namespace Backend.Logic
         {
             Membre membre = _MembreServices.GetMembre(annonce.Vendeur_id);
             if (membre == null)
-                throw new Exception("This member does not exists");
+                throw new Exception("Membre invalide");
             Annonce newAnnonce = await _AnnonceServices.AddAnnonce(annonce);
             await _AnnonceAdresseService.AddAnnonceAdresse(newAnnonce.Id, membre.Campus_Id);
             return newAnnonce;
@@ -54,12 +58,25 @@ namespace Backend.Logic
             return _AnnonceServices.GetAnnonceById(id); 
         }
 
+        public async Task<List<Annonce>> GetAnnoncesByCampusName(string campusName)
+        {
+            Adresse adresse = _AdresseServices.GetAdresseByVille(campusName);
+            if (adresse == null)
+                throw new Exception("Aucune adresse trouvée pour ce nom de campus");
+
+            //List<AnnonceAdresse> annoncesAdresses = _AnnonceAdresseService.GetIdAnnonceByIdAdresse();
+            //if (annoncesAdresses == null)
+            //    throw new Exception("Aucune annonce trouvée pour ce campus");
+
+            return await _AnnonceServices.GetAnnoncesByIdAdresse(adresse.Id);
+        }
+
         public async Task<List<Annonce>> GetAnnoncesByEmail(String email)
         {
             Membre membre = _MembreServices.GetMembreByEmail(email);
             if(membre == null)
             {
-                throw new Exception("Member not found");
+                throw new Exception("Membre non trouvé");
             }
             return await _AnnonceServices.GetAnnoncesByIdVendeur(membre.Id);
         }

@@ -10,6 +10,7 @@ namespace Backend.Services
     public interface IAnnonceAdresseService
     {
         Task<AnnonceAdresse> AddAnnonceAdresse(int idAnnonce, int idAdresse);
+        List<AnnonceAdresse> GetIdAnnonceByIdAdresse(int id);
     }
     public class AnnonceAdresseService : IAnnonceAdresseService
     {
@@ -27,6 +28,11 @@ namespace Backend.Services
             annonceAdresse = _dataContext.AnnonceAdresses.Add(annonceAdresse).Entity;
             await _dataContext.SaveChangesAsync();
             return annonceAdresse;
+        }
+
+        public List<AnnonceAdresse> GetIdAnnonceByIdAdresse(int id)
+        {
+            return _dataContext.AnnonceAdresses.Where(annonceAdresse => annonceAdresse.Adresse_id == id).ToList();
         }
     }
 }

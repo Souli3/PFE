@@ -17,6 +17,7 @@ namespace Backend.Services
         Annonce GetAnnonceById(int id);
         Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce);
         Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie);
+        Task<List<Annonce>> GetAnnoncesByIdAdresse(int idAdresse);
     }
     public class AnnonceService : IAnnonceServices
     {
@@ -46,6 +47,13 @@ namespace Backend.Services
         public Annonce GetAnnonceById(int id)
         {
             return _dataContext.Annonces.Where(annonce => annonce.Id == id).FirstOrDefault();
+        }
+
+        public async Task<List<Annonce>> GetAnnoncesByIdAdresse(int idAdresse)
+        {
+            return await _dataContext.Annonces
+                .FromSqlRaw("SELECT a.* FROM pfe.annonces a, pfe.annonces_adresses aa WHERE a.Annonce_id = aa.Annonce_id AND aa.Adresse_id = {0}", 1)
+                .ToListAsync();
         }
 
         public async Task<List<Annonce>> GetAnnoncesByIdVendeur(int id)

@@ -25,5 +25,7 @@ namespace Backend.Models
         public int Vendeur_id { get; set; }
         [Column("categorie_id")]
         public int Categorie_id { get; set; }
+        [NotMapped]
+        public List<Adresse> adresses { get; set; }
     }
 }
