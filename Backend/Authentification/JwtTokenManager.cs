@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
+using Backend.Models;
 
 namespace Backend.Authentification
 {
@@ -26,7 +27,10 @@ namespace Backend.Authentification
         }
         public string Authenticate(string email, string password)
         {
-            if (!_dataContext.Membres.Any(x => x.Email.Equals(email) )) return null;
+            Membre membre = _dataContext.Membres.FirstOrDefault(x => x.Email.Equals(email));
+            if ( membre ==null) return null;
+
+            String role = membre.Administrateur ? "Admin" : "User";
 
             var keyBytes = Encoding.ASCII.GetBytes(_configuration["JwtConfig:Key"]);
 
@@ -36,7 +40,8 @@ namespace Backend.Authentification
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, email)
+                    new Claim(ClaimTypes.NameIdentifier, email),
+                    new Claim(ClaimTypes.Role, role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(14),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)

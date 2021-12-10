@@ -60,7 +60,7 @@ namespace Backend.Controllers
 
             return Ok();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("ban/{id}/{time}")]
         public async Task<ActionResult<Membre>> BanMembre(int id, int time)
         {
