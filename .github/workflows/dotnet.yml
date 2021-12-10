@@ -20,6 +20,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ./Backend/Backend.csproj
     - name: Build
-      run: dotnet build --no-restore --project Backend/Backend.csproj
+      run: dotnet build --no-restore ./Backend/Backend.csproj
     - name: Test
-      run: dotnet --project Backend.Test/Backend.Tests.csproj
+      run: dotnet ./Backend.Test/Backend.Tests.csproj
