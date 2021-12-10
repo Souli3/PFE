@@ -52,7 +52,7 @@ namespace Backend.Services
         public async Task<List<Annonce>> GetAnnoncesByIdAdresse(int idAdresse)
         {
             return await _dataContext.Annonces
-                .FromSqlRaw("SELECT a.* FROM pfe.annonces a, pfe.annonces_adresses aa WHERE a.Annonce_id = aa.Annonce_id AND aa.Adresse_id = {0}", 1)
+                .FromSqlRaw("SELECT a.* FROM pfe.annonces a, pfe.annonces_adresses aa WHERE a.Annonce_id = aa.Annonce_id AND aa.Adresse_id = {0}", idAdresse)
                 .ToListAsync();
         }
 

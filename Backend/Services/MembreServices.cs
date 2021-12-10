@@ -15,6 +15,7 @@ namespace Backend.Services
         Task AddMembre(Membre Membre);
         Membre GetMembreByEmail(string email);
         Task<Membre> UpdateMembre(Membre membre);
+        Task<Membre> BanMembre(Membre membre, int time);
     }
     public class MembreServices : IMembreServices
     {
@@ -32,9 +33,21 @@ namespace Backend.Services
 
         }
 
+        public async Task<Membre> BanMembre(Membre membre, int time)
+        {
+            DateTime bannedUntil = DateTime.Now.AddDays(time);
+            Membre membreDB = _dataContext.Membres.FirstOrDefault(x => x.Email.Equals(membre.Email));
+            //Verify if member is already banned and if new Date Ban is lower than current Date Ban
+            if (membreDB.Banni != null && membreDB.Banni > DateTime.Now && bannedUntil < membreDB.Banni)
+                return null;
+            membreDB.Banni = bannedUntil;
+            await _dataContext.SaveChangesAsync();
+            return membreDB;
+        }
+
         public async Task<List<Membre>> GetAllMembresAsync()
         {
-            return await _dataContext.Membres.ToListAsync();
+            return await _dataContext.Membres.OrderBy(x => x.Id).ToListAsync();
         }
 
         public Membre GetMembre(int id)

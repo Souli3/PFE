@@ -53,5 +53,20 @@ namespace Backend.Controllers
 
             return Ok();
         }
+
+        [HttpPut("ban/{id}/{time}")]
+        public async Task<ActionResult<Membre>> BanMembre(int id, int time)
+        {
+            Membre bannedMember;
+            try
+            {
+                bannedMember = await _MembreLogic.BanMembre(id, time);
+            }
+            catch(Exception e)
+            {
+                return NotFound(e.Message);
+            }
+            return Ok(bannedMember);
+        }
     }
 }

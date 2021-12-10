@@ -64,10 +64,6 @@ namespace Backend.Logic
             if (adresse == null)
                 throw new Exception("Aucune adresse trouvée pour ce nom de campus");
 
-            //List<AnnonceAdresse> annoncesAdresses = _AnnonceAdresseService.GetIdAnnonceByIdAdresse();
-            //if (annoncesAdresses == null)
-            //    throw new Exception("Aucune annonce trouvée pour ce campus");
-
             return await _AnnonceServices.GetAnnoncesByIdAdresse(adresse.Id);
         }
 
