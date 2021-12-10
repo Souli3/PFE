@@ -28,9 +28,16 @@ namespace Backend.Controllers
         [HttpGet("GetMembre")]
         public ActionResult<Membre> GetMember()
         {
-            Membre p = _MembreLogic.GetMembre(_jwtTokenManager.DecodeJWTToGetEmail(Request));
-            p.MotDePasse = "";
-            return Ok(p);
+            Membre m = _MembreLogic.GetMembre(_jwtTokenManager.DecodeJWTToGetEmail(Request));
+            m.MotDePasse = "";
+            return Ok(m);
+        }
+        [HttpGet("GetMembre/{id}")]
+        public ActionResult<Membre> GetMemberById(int id)
+        {
+            Membre m = _MembreLogic.GetMembreById(id);
+            m.MotDePasse = "";
+            return Ok(m);
         }
         [HttpPut("UpdateMembre")]
         public async Task<ActionResult<Membre>> UpdateMember(Membre membre)

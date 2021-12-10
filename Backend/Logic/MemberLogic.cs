@@ -14,6 +14,7 @@ namespace Backend.Logic
         Task AddMembre(Membre Membres);
         Task<Membre> UpdateMember(Membre membre);
         Task<Membre> BanMembre(int id, int time);
+        Membre GetMembreById(int id);
     }
     public class MemberLogic : IMembresLogic
     {
@@ -48,6 +49,11 @@ namespace Backend.Logic
         public Membre GetMembre(string email)
         {
             return _MembreServices.GetMembreByEmail(email);
+        }
+
+        public Membre GetMembreById(int id)
+        {
+            return _MembreServices.GetMembre(id);
         }
 
         public async Task<Membre> UpdateMember(Membre membre)
