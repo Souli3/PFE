@@ -42,6 +42,22 @@ namespace Backend.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("campus/{name}")]
+        public async Task<ActionResult<List<Annonce>>>GetAnnoncesByCampusName(String name)
+        {
+            List<Annonce> annonce;
+            try
+            {
+                annonce = await _AnnonceLogic.GetAnnoncesByCampusName(name);
+            }
+            catch(Exception e)
+            {
+                return NotFound(e.Message);
+            }
+            return Ok(annonce);
+        }
+
+        [AllowAnonymous]
         [HttpGet("categorie")]
         public async Task<ActionResult<List<Annonce>>> GetAllAnnoncesByCategorie(Categorie categorie)
         {
@@ -68,7 +84,15 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<ActionResult> AddAnnonce(Annonce annonce)
         {
-            Annonce newAnnonce = await _AnnonceLogic.AddAnnonce(annonce);
+            Annonce newAnnonce;
+            try
+            {
+                newAnnonce = await _AnnonceLogic.AddAnnonce(annonce); 
+            } 
+            catch(Exception e)
+            {
+                return NotFound(e.Message);
+            }
             return Ok(newAnnonce);
         }
 

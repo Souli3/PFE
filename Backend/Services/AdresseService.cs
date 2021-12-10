@@ -11,6 +11,7 @@ namespace Backend.Services
     public interface IAdresseService
     {
         Task<List<Adresse>> GetAllAdresses();
+        Adresse GetAdresseByVille(string ville);
     }
     public class AdresseService : IAdresseService
     {
@@ -19,6 +20,12 @@ namespace Backend.Services
         {
             _dataContext = dataContext;
         }
+
+        public Adresse GetAdresseByVille(string ville)
+        {
+            return _dataContext.Adresses.Where(adresse => adresse.Ville == ville).FirstOrDefault();
+        }
+
         public async Task<List<Adresse>> GetAllAdresses()
         {
             return await _dataContext.Adresses.ToListAsync();

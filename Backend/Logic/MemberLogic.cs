@@ -13,8 +13,8 @@ namespace Backend.Logic
         Task<List<Membre>> GetAllMembres();
         Task AddMembre(Membre Membres);
         Task<Membre> UpdateMember(Membre membre);
-
-
+        Task<Membre> BanMembre(int id, int time);
+        Membre GetMembreById(int id);
     }
     public class MemberLogic : IMembresLogic
     {
@@ -28,6 +28,17 @@ namespace Backend.Logic
             await _MembreServices.AddMembre(Membres);
         }
 
+        public async Task<Membre> BanMembre(int id, int time)
+        {
+            Membre membre = _MembreServices.GetMembre(id);
+            if (membre == null)
+                throw new Exception("Membre non trouvé");
+            Membre membreBanni = await _MembreServices.BanMembre(membre, time);
+            if(membreBanni == null)
+                throw new Exception("Ce membre est déjà banni pour une durée supérieure");
+            return membreBanni;
+        }
+
         public async Task<List<Membre>> GetAllMembres()
         {
             
@@ -38,6 +49,11 @@ namespace Backend.Logic
         public Membre GetMembre(string email)
         {
             return _MembreServices.GetMembreByEmail(email);
+        }
+
+        public Membre GetMembreById(int id)
+        {
+            return _MembreServices.GetMembre(id);
         }
 
         public async Task<Membre> UpdateMember(Membre membre)
