@@ -22,4 +22,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore ./Backend/Backend.csproj
     - name: Test
-      run: dotnet run --project ./Backend.Tests/Backend.Tests.csproj
+      run: dotnet test --project ./Backend.Tests/Backend.Tests.csproj
