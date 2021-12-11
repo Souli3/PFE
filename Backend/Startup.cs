@@ -94,7 +94,7 @@ namespace Backend
             app.UseDefaultFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Medias")),
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "Medias")),
                 RequestPath = "/Medias"
             });
 
