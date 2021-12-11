@@ -20,6 +20,7 @@ using System.Text;
 using Backend.Authentification;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Backend
 {
@@ -94,9 +95,9 @@ namespace Backend
             app.UseDefaultFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "Medias")),
-                RequestPath = "/Medias"
-            });
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Medias")),
+                RequestPath = new PathString("/Medias")
+            }) ;
 
             //app.UseCors("AllowAll");
             app.UseHttpsRedirection();
