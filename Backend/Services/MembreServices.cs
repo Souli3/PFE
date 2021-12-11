@@ -35,12 +35,27 @@ namespace Backend.Services
 
         public async Task<Membre> BanMembre(Membre membre, int time)
         {
-            DateTime bannedUntil = DateTime.Now.AddDays(time);
+            DateTime bannedUntil;
+            if (time == -1)
+                bannedUntil = DateTime.MaxValue;
+            else
+                bannedUntil = DateTime.Now.AddDays(time);
             Membre membreDB = _dataContext.Membres.FirstOrDefault(x => x.Email.Equals(membre.Email));
-            //Verify if member is already banned and if new Date Ban is lower than current Date Ban
-            if (membreDB.Banni != null && membreDB.Banni > DateTime.Now && bannedUntil < membreDB.Banni)
-                return null;
-            membreDB.Banni = bannedUntil;
+
+            //Time == 0 means UNBAN
+            if(time == 0)
+            {
+                membreDB.Banni = DateTime.Now;
+            }
+            else
+            {
+                //Verify if member is already banned and if new Date Ban is lower than current Date Ban
+                if (membreDB.Banni != null && membreDB.Banni > DateTime.Now && bannedUntil < membreDB.Banni)
+                    return null;
+
+                membreDB.Banni = bannedUntil;
+            }
+
             await _dataContext.SaveChangesAsync();
             return membreDB;
         }
