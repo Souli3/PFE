@@ -93,25 +93,25 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<ActionResult> AddAnnonce([FromForm] Annonce annonce)
         {
-           Annonce newAnnonce;
+            Annonce newAnnonce;
             try
             {
-                newAnnonce = await _AnnonceLogic.AddAnnonce(annonce); 
-            } 
-            catch(Exception e)
+                newAnnonce = await _AnnonceLogic.AddAnnonce(annonce);
+            }
+            catch (Exception e)
             {
                 return NotFound(e.Message);
             }
-            
-            List<string> mesPhotos = new  List<String>();
+            if (annonce.ImageFile != null) { 
+                List<string> mesPhotos = new List<String>();
 
-            
-                annonce.ImageFile.ForEach( imageFile =>  {
-                    mesPhotos.Add( SaveImageAsync(imageFile));
-                 });
-            
-            await _mediaLogic.AddMedias(mesPhotos, newAnnonce.Id);
 
+                annonce.ImageFile.ForEach(imageFile => {
+                    mesPhotos.Add(SaveImageAsync(imageFile));
+                });
+
+                await _mediaLogic.AddMedias(mesPhotos, newAnnonce.Id);
+            }
 
             return Ok("Votre annonce a été ajouté avec succès");
         }
