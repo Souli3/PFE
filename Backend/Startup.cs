@@ -36,9 +36,18 @@ namespace Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            if (Environment.GetEnvironmentVariable("ConnectionStrings") != null)
+            {
+                services.AddDbContext<DataContext>(options => options.UseNpgsql(Environment.GetEnvironmentVariable("ConnectionStrings"), options => options.SetPostgresVersion(9, 6)));
+
+            }
+            else
+            {
+                services.AddDbContext<DataContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), options => options.SetPostgresVersion(9, 6)));
+
+            }
             //services.AddCors();
             //services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithMethods("GET")));
-            services.AddDbContext<DataContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), options => options.SetPostgresVersion(9, 6)));
             services.AddScoped<IDataContext>(porvider => porvider.GetService<DataContext>());
             services.AddScoped<IMembresLogic, MemberLogic>();
             services.AddScoped<IRegisterLogic, RegisterLogic>();
