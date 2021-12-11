@@ -15,7 +15,7 @@ namespace Backend.Services
         Task<List<Annonce>> GetAnnoncesByIdVendeur(int id);
         Task<Annonce> AddAnnonce(Annonce annonce);
         Annonce GetAnnonceById(int id);
-        Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce);
+        Task<Annonce> UpdateAnnonce(Annonce annonce);
         Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie);
         Task<List<Annonce>> GetAnnoncesByIdAdresse(int idAdresse);
     }
@@ -61,7 +61,7 @@ namespace Backend.Services
             return await _dataContext.Annonces.Where(annonce => annonce.Vendeur_id == id).ToListAsync();
         }
 
-        public async Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce)
+        public async Task<Annonce> UpdateAnnonce(Annonce annonce)
         {
             Annonce annonceDB = _dataContext.Annonces.Where(a => a.Id == annonce.Id).FirstOrDefault();
             annonceDB.Titre = annonce.Titre;
