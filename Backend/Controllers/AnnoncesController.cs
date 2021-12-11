@@ -28,7 +28,7 @@ namespace Backend.Controllers
         private IWebHostEnvironment _hostEnvironment;
         private IMediaLogic _mediaLogic;
 
-        public AnnoncesController(IAnnonceLogic AnnonceLogic, IJwtTokenManager jwtTokenManager,  IMediaLogic mediaLogic, IWebHostEnvironment hostEnvironment)
+        public AnnoncesController(IAnnonceLogic AnnonceLogic, IJwtTokenManager jwtTokenManager, IMediaLogic mediaLogic, IWebHostEnvironment hostEnvironment)
         {
             _AnnonceLogic = AnnonceLogic;
             _jwtTokenManager = jwtTokenManager;
@@ -53,14 +53,14 @@ namespace Backend.Controllers
 
         [AllowAnonymous]
         [HttpGet("campus/{name}")]
-        public async Task<ActionResult<List<Annonce>>>GetAnnoncesByCampusName(String name)
+        public async Task<ActionResult<List<Annonce>>> GetAnnoncesByCampusName(String name)
         {
             List<Annonce> annonce;
             try
             {
                 annonce = await _AnnonceLogic.GetAnnoncesByCampusName(name);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return NotFound(e.Message);
             }
@@ -93,23 +93,23 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<ActionResult> AddAnnonce([FromForm] Annonce annonce)
         {
-           Annonce newAnnonce;
+            Annonce newAnnonce;
             try
             {
-                newAnnonce = await _AnnonceLogic.AddAnnonce(annonce); 
-            } 
-            catch(Exception e)
+                newAnnonce = await _AnnonceLogic.AddAnnonce(annonce);
+            }
+            catch (Exception e)
             {
                 return NotFound(e.Message);
             }
-            
-            List<string> mesPhotos = new  List<String>();
 
-            
-                annonce.ImageFile.ForEach( imageFile =>  {
-                    mesPhotos.Add( SaveImageAsync(imageFile));
-                 });
-            
+            List<string> mesPhotos = new List<String>();
+
+
+            annonce.ImageFile.ForEach(imageFile => {
+                mesPhotos.Add(SaveImageAsync(imageFile));
+            });
+
             await _mediaLogic.AddMedias(mesPhotos, newAnnonce.Id);
 
 
@@ -119,10 +119,21 @@ namespace Backend.Controllers
         [HttpPut]
         public async Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce)
         {
-            return await _AnnonceLogic.UpdateAnnonce(annonce);
+            Annonce annonceDB = await _AnnonceLogic.UpdateAnnonce(annonce);
+            if (annonceDB == null) return Unauthorized("Il faut être admin pour valider une annonce");
+            return Ok(annonceDB);
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("admin")]
+        public async Task<ActionResult<Annonce>> UpdateAnnonceAdmin(Annonce annonce)
+        {
+            Annonce annonceDB = await _AnnonceLogic.UpdateAnnonceAdmin(annonce);
+            return Ok(annonceDB);
+        }
+
         [NonAction]
-        public  string SaveImageAsync(IFormFile imageFile)
+        public string SaveImageAsync(IFormFile imageFile)
         {
             string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
             imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);

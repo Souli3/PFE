@@ -27,6 +27,8 @@ namespace Backend.Controllers
         public IActionResult Login(Membre membres)
         {
             Membre membreDB = _registerLogic.Login(membres);
+            if (membreDB.Banni > DateTime.Now) return Unauthorized("Vous êtes banni");
+
             if (membreDB == null || membreDB.Email == null) return Unauthorized();
 
             if (!BCrypt.Net.BCrypt.Verify(membres.MotDePasse, membreDB.MotDePasse)) return Unauthorized();
