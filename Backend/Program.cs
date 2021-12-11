@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,6 +22,7 @@ namespace Backend
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
+                    .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseIISIntegration()
                     .UseIIS()
                     .UseStartup<Startup>();
