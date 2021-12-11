@@ -15,6 +15,7 @@ namespace Backend.Data
         DbSet<Adresse> Adresses { get; set; }
         DbSet<Categorie> Categories { get; set; }
         DbSet<AnnonceAdresse> AnnonceAdresses { get; set; }
+        public DbSet<Media> Medias { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

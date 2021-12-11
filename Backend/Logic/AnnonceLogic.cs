@@ -13,7 +13,7 @@ namespace Backend.Logic
         Task<List<Annonce>> GetAllAnnonces();
         Task<List<Annonce>> GetAnnoncesByEmail(String email);
         Task<Annonce> AddAnnonce(Annonce annonce);
-        Annonce GetAnnonceById(int id);
+        Task<Annonce> GetAnnonceById(int id);
         Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce);
         Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie);
         Task<List<Annonce>> GetAnnoncesByCampusName(string campusName);
@@ -24,13 +24,15 @@ namespace Backend.Logic
         private IMembreServices _MembreServices;
         private IAdresseService _AdresseServices;
         private IAnnonceAdresseService _AnnonceAdresseService;
+        private IMediaService _MediaService;
         public AnnonceLogic(IAnnonceServices AnnonceServices, IMembreServices MembreServices,
-            IAdresseService AdresseServices, IAnnonceAdresseService AnnonceAdresseService)
+            IAdresseService AdresseServices, IAnnonceAdresseService AnnonceAdresseService, IMediaService mediaService)
         {
             _AnnonceServices = AnnonceServices;
             _MembreServices = MembreServices;
             _AdresseServices = AdresseServices;
             _AnnonceAdresseService = AnnonceAdresseService;
+            _MediaService = mediaService;
         }
 
         public async Task<Annonce> AddAnnonce(Annonce annonce)
@@ -40,22 +42,22 @@ namespace Backend.Logic
                 throw new Exception("Membre invalide");
             Annonce newAnnonce = await _AnnonceServices.AddAnnonce(annonce);
             await _AnnonceAdresseService.AddAnnonceAdresse(newAnnonce.Id, membre.Campus_Id);
-            return newAnnonce;
+            return await _MediaService.GetAllMediaFromAnnonce(newAnnonce);
         }
 
         public async Task<List<Annonce>> GetAllAnnonces()
         {
-            return await _AnnonceServices.GetAllAnnoncesAsync();
+            return await _MediaService.GetAllMediaFromListAnnonce( await _AnnonceServices.GetAllAnnoncesAsync());
         }
 
         public async Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie)
         {
-            return await _AnnonceServices.GetAllAnnoncesByCategorie(categorie);
+            return await _MediaService.GetAllMediaFromListAnnonce(await _AnnonceServices.GetAllAnnoncesByCategorie(categorie));
         }
 
-        public Annonce GetAnnonceById(int id)
+        public async Task<Annonce> GetAnnonceById(int id)
         {
-            return _AnnonceServices.GetAnnonceById(id); 
+            return await _MediaService.GetAllMediaFromAnnonce(_AnnonceServices.GetAnnonceById(id)); 
         }
 
         public async Task<List<Annonce>> GetAnnoncesByCampusName(string campusName)
@@ -64,7 +66,7 @@ namespace Backend.Logic
             if (adresse == null)
                 throw new Exception("Aucune adresse trouvée pour ce nom de campus");
 
-            return await _AnnonceServices.GetAnnoncesByIdAdresse(adresse.Id);
+            return await _MediaService.GetAllMediaFromListAnnonce(await _AnnonceServices.GetAnnoncesByIdAdresse(adresse.Id));
         }
 
         public async Task<List<Annonce>> GetAnnoncesByEmail(String email)
@@ -74,7 +76,7 @@ namespace Backend.Logic
             {
                 throw new Exception("Membre non trouvé");
             }
-            return await _AnnonceServices.GetAnnoncesByIdVendeur(membre.Id);
+            return await _MediaService.GetAllMediaFromListAnnonce(await _AnnonceServices.GetAnnoncesByIdVendeur(membre.Id));
         }
 
         public async Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce)

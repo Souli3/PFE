@@ -18,6 +18,7 @@ namespace Backend.Data
         public DbSet<Annonce> Annonces { get; set; }
         public DbSet<Adresse> Adresses { get; set; }
         public DbSet<Categorie> Categories { get ; set ; }
+        public DbSet<Media> Medias { get; set; }
         public DbSet<AnnonceAdresse> AnnonceAdresses { get ; set ; }
     }
 }

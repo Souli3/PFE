@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Backend.Models
@@ -27,5 +29,11 @@ namespace Backend.Models
         public int Categorie_id { get; set; }
         [NotMapped]
         public List<Adresse> adresses { get; set; }
+        [NotMapped]
+        [JsonIgnore]
+        public List<IFormFile>? ImageFile { get; set; }        
+        [NotMapped]
+        public List<string> UrlPhoto { get; set; }  
+
     }
 }

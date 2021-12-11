@@ -18,6 +18,8 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Backend.Authentification;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace Backend
 {
@@ -47,6 +49,8 @@ namespace Backend
             services.AddScoped<ICategorieService, CategorieService>();
             services.AddScoped<IAdresseLogic, AdresseLogic>();
             services.AddScoped<IAdresseService, AdresseService>();
+            services.AddScoped<IMediaLogic, MediaLogic>();
+            services.AddScoped<IMediaService, MediaService>();
             services.AddScoped<IAnnonceAdresseService, AnnonceAdresseService>();
             services.AddControllers();
             services.AddAuthentication(authOption =>
@@ -87,6 +91,13 @@ namespace Backend
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Medias")),
+                RequestPath = "/Medias"
+            });
+
             //app.UseCors("AllowAll");
             app.UseHttpsRedirection();
 
