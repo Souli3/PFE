@@ -14,7 +14,7 @@ namespace Backend
     {
         public static void Main(string[] args)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Medias");
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"/Medias");
             if (!Directory.Exists(filePath))
             {
                 Directory.CreateDirectory(filePath);
