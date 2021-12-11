@@ -125,7 +125,7 @@ namespace Backend.Controllers
         {
             string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
             imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Medias", imageName);
+            var imagePath = Path.Combine("./../", "Medias", imageName);
             using (var fileStream = new FileStream(imagePath, FileMode.Create))
             {
                  imageFile.CopyTo(fileStream);
