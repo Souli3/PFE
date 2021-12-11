@@ -2,6 +2,7 @@
 using Backend.Logic;
 using Backend.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -24,10 +25,10 @@ namespace Backend.Controllers
     {
         private IAnnonceLogic _AnnonceLogic;
         private readonly IJwtTokenManager _jwtTokenManager;
-        private IHostEnvironment _hostEnvironment;
+        private IWebHostEnvironment _hostEnvironment;
         private IMediaLogic _mediaLogic;
 
-        public AnnoncesController(IAnnonceLogic AnnonceLogic, IJwtTokenManager jwtTokenManager, IHostEnvironment hostEnvironment, IMediaLogic mediaLogic)
+        public AnnoncesController(IAnnonceLogic AnnonceLogic, IJwtTokenManager jwtTokenManager, IWebHostEnvironment hostEnvironment, IMediaLogic mediaLogic)
         {
             _AnnonceLogic = AnnonceLogic;
             _jwtTokenManager = jwtTokenManager;
@@ -125,7 +126,7 @@ namespace Backend.Controllers
         {
             string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
             imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
-            var imagePath = Path.Combine("./../", "Medias", imageName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, imageName);
             using (var fileStream = new FileStream(imagePath, FileMode.Create))
             {
                  imageFile.CopyTo(fileStream);
