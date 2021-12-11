@@ -32,8 +32,11 @@ namespace Backend.Services
         public async Task<List<Annonce>> GetAllMediaFromListAnnonce(List<Annonce> annonces)
         {
             
+
+
             foreach (Annonce annonce in annonces)
             {
+                annonce.UrlPhoto = new List<string>();
                 annonce.UrlPhoto = _dataContext.Medias.Where(x=>x.Annonce_id==annonce.Id).Select(x=>x.Url).ToList();
             }
             return annonces;
@@ -41,7 +44,8 @@ namespace Backend.Services
         public async Task<Annonce> GetAllMediaFromAnnonce(Annonce annonce)
         {
             annonce.UrlPhoto = new List<string>();
-            annonce.UrlPhoto.Add( _dataContext.Medias.Where(x => x.Annonce_id == annonce.Id).Select(x => x.Url).FirstOrDefault());
+            
+            annonce.UrlPhoto = _dataContext.Medias.Where(x => x.Annonce_id == annonce.Id).Select(x => x.Url).ToList();
             return annonce;
         }
     }
