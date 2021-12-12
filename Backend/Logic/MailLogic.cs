@@ -21,17 +21,29 @@ namespace Backend.Logic
         {
             _configuration = configuration;
 
-            smtpClient = new SmtpClient("smtp.gmail.com")
+            smtpClient = new SmtpClient(_configuration["Smtp:Host"])
             {
-                Port = 587,
-                Credentials = new NetworkCredential(_configuration["Domains:Mail"], _configuration["Domains:PasswMail"]),
+                Port = int.Parse(_configuration["Smtp:Port"]),
+                Credentials = new NetworkCredential(_configuration["Smtp:Mail"], _configuration["Smtp:PasswMail"]),
                 EnableSsl = true,
             };
         }
 
         public void Send(Membre membre)
-        {        
-            smtpClient.Send(_configuration["Domains:Mail"], membre.Email, "TestSubject", "TestBody");
+        {
+            MailMessage mailMessage = new MailMessage
+            {
+                From = new MailAddress(_configuration["Smtp:Mail"]),
+                Subject = "Confirmation de votre compte MarketVinci",
+                Body = "<h1>Market Vinci</h1>" +
+                       "<p>Veuillez confirmer votre compte en cliquant sur le lien ci dessous.</p>" +
+                       //"<p><a href=\"https://backend-staging-pfe.herokuapp.com/Login/validate/" + membre.Id + "\">Validez en cliquant ici</a></p>" +
+                       "<p><a href=\"http://localhost:26934/Login/validate/" + membre.Id + "\">Validez en cliquant ici</a></p>" +
+                       "<p>Nous vous remercions d'utiliser Market Vinci.</p>",
+                IsBodyHtml = true,
+            };
+            mailMessage.To.Add(membre.Email);
+            smtpClient.Send(mailMessage);
         }
     }
 }

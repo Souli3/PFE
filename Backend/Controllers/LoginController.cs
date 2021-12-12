@@ -57,12 +57,12 @@ namespace Backend.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("validate/{id}")]
+        [HttpGet("validate/{id}")]
         public async Task<IActionResult> Validate(int id)
         {
             Membre membreDB = await _registerLogic.Validate(id);
             if (membreDB == null) return NotFound("Compte à valider non trouvé");
-            return Ok("Le compte est maintenant validé !");
+            return Ok("Votre compte est maintenant validé !");
         }
 
     }
