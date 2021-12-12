@@ -31,13 +31,22 @@ namespace Backend.Logic
 
         public void Send(Membre membre)
         {
+            String Url;
+            if (Environment.GetEnvironmentVariable("SmtpUrl") == null)
+            {
+                Url = _configuration["Smtp:Url"];
+            }
+            else
+            {
+                Url = Environment.GetEnvironmentVariable("SmtpUrl");
+            }
             MailMessage mailMessage = new MailMessage
             {
                 From = new MailAddress(_configuration["Smtp:Mail"]),
                 Subject = "Confirmation de votre compte MarketVinci",
                 Body = "<h1>Market Vinci</h1>" +
                        "<p>Veuillez confirmer votre compte en cliquant sur le lien ci dessous.</p>" +
-                       "<p><a href=\"https://backend-staging-pfe.herokuapp.com/Login/validate/" + membre.Id + "\">Validez en cliquant ici</a></p>" +
+                       "<p><a href=\"" + Url + membre.Id + "\">Validez en cliquant ici</a></p>" +
                        "<p>Nous vous remercions d'utiliser Market Vinci.</p>",
                 IsBodyHtml = true,
             };
