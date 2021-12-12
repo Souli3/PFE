@@ -37,10 +37,12 @@ namespace Backend.Services
         }
         public async Task AddAnnonceAdresses(Annonce annonce)
         {
-            foreach (Adresse adresse in annonce.adresses)
+            List<string> listsAdresses = annonce.adressesToAdd.Split(',').ToList();
+
+            foreach (string adresse_id in listsAdresses)
             {
-                if (!_dataContext.AnnonceAdresses.Any(x => x.Adresse_id == adresse.Id && x.Annonce_id == annonce.Id)) { 
-                    _dataContext.AnnonceAdresses.Add(new AnnonceAdresse() { Annonce_id = annonce.Id, Adresse_id = adresse.Id });
+                if (!_dataContext.AnnonceAdresses.Any(x => x.Adresse_id.ToString().Equals(adresse_id) && x.Annonce_id == annonce.Id)) { 
+                    _dataContext.AnnonceAdresses.Add(new AnnonceAdresse() { Annonce_id = annonce.Id, Adresse_id = int.Parse(adresse_id) });
                     await _dataContext.SaveChangesAsync();
                 }
             }

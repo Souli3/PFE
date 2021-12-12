@@ -43,7 +43,7 @@ namespace Backend.Logic
                 throw new Exception("Membre invalide");
             Annonce newAnnonce = await _AnnonceServices.AddAnnonce(annonce);
             //await _AnnonceAdresseService.AddAnnonceAdresse(newAnnonce.Id, membre.Campus_Id);
-            if (annonce.adresses != null)
+            if (annonce.adressesToAdd != null)
             {
                 await _AnnonceAdresseService.AddAnnonceAdresses(annonce);
             }

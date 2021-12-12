@@ -33,7 +33,9 @@ namespace Backend.Models
         [JsonIgnore]
         public List<IFormFile>? ImageFile { get; set; }        
         [NotMapped]
-        public List<string> UrlPhoto { get; set; }  
+        public List<string> UrlPhoto { get; set; }
+        [NotMapped]
+        public String adressesToAdd { get; set; }
 
     }
 }
