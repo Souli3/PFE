@@ -17,23 +17,25 @@ namespace Backend.Controllers
     {
         private readonly IJwtTokenManager _jwtTokenManager;
         private IRegisterLogic _registerLogic;
-        public LoginController(IJwtTokenManager jwtTokenManager, IRegisterLogic registerLogic)
+        private IMailLogic _mailLogic;
+        public LoginController(IJwtTokenManager jwtTokenManager, IRegisterLogic registerLogic, IMailLogic mailLogic)
         {
             _jwtTokenManager = jwtTokenManager;
             _registerLogic = registerLogic;
+            _mailLogic = mailLogic;
         }
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login(Membre membres)
+        public IActionResult Login(Membre membre)
         {
-            Membre membreDB = _registerLogic.Login(membres);
+            Membre membreDB = _registerLogic.Login(membre);
             if (membreDB.Banni > DateTime.Now) return Unauthorized("Vous êtes banni");
 
             if (membreDB == null || membreDB.Email == null) return Unauthorized();
 
-            if (!BCrypt.Net.BCrypt.Verify(membres.MotDePasse, membreDB.MotDePasse)) return Unauthorized();
+            if (!BCrypt.Net.BCrypt.Verify(membre.MotDePasse, membreDB.MotDePasse)) return Unauthorized();
            
-            var token = _jwtTokenManager.Authenticate(membres.Email, membres.MotDePasse);
+            var token = _jwtTokenManager.Authenticate(membre.Email, membre.MotDePasse);
             if (string.IsNullOrEmpty(token)) return Unauthorized();
             membreDB.Token = token;
             membreDB.MotDePasse = "";
@@ -41,18 +43,19 @@ namespace Backend.Controllers
         }
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register(Membre membres)
+        public async Task<IActionResult> Register(Membre membre)
         {
-            membres.MotDePasse = BCrypt.Net.BCrypt.HashPassword(membres.MotDePasse);
-            Membre membresInscrite = await _registerLogic.Register(membres);
-            if (membresInscrite == null) return BadRequest();
+            membre.MotDePasse = BCrypt.Net.BCrypt.HashPassword(membre.MotDePasse);
+            Membre membreInscrit = await _registerLogic.Register(membre);
+            if (membreInscrit == null) return BadRequest();
 
+            _mailLogic.Send(membreInscrit.Email);
 
-            var token = _jwtTokenManager.Authenticate(membresInscrite.Email, membresInscrite.MotDePasse);
+            var token = _jwtTokenManager.Authenticate(membreInscrit.Email, membreInscrit.MotDePasse);
             if (string.IsNullOrEmpty(token)) return Unauthorized();
-            membresInscrite.Token = token;
-            membresInscrite.MotDePasse = "";
-            return Ok(membresInscrite);
+            membreInscrit.Token = token;
+            membreInscrit.MotDePasse = "";
+            return Ok(membreInscrit);
         }
 
     }

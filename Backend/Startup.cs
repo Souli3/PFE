@@ -62,6 +62,7 @@ namespace Backend
             services.AddScoped<IMediaLogic, MediaLogic>();
             services.AddScoped<IMediaService, MediaService>();
             services.AddScoped<IAnnonceAdresseService, AnnonceAdresseService>();
+            services.AddScoped<IMailLogic, MailLogic>();
             services.AddControllers();
             services.AddAuthentication(authOption =>
             {
