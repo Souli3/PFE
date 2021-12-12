@@ -51,9 +51,7 @@ namespace Backend.Controllers
             if (membreInscrit == null) return BadRequest();
 
             _mailLogic.Send(membreInscrit);
-
-            membreInscrit.MotDePasse = "";
-            return Ok(membreInscrit);
+            return Ok("Nous vous avons envoyé un mail afin de valider votre compte");
         }
 
         [AllowAnonymous]
