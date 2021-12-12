@@ -48,17 +48,17 @@ namespace Backend.Logic
 
         public async Task<List<Annonce>> GetAllAnnonces()
         {
-            return await _MediaService.GetAllMediaFromListAnnonce( await _AnnonceServices.GetAllAnnoncesAsync());
+            return  _AdresseServices.GetAllAdressesFromListAnnonces( await _MediaService.GetAllMediaFromListAnnonce( await _AnnonceServices.GetAllAnnoncesAsync()));
         }
 
         public async Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie)
         {
-            return await _MediaService.GetAllMediaFromListAnnonce(await _AnnonceServices.GetAllAnnoncesByCategorie(categorie));
+            return  _AdresseServices.GetAllAdressesFromListAnnonces( await _MediaService.GetAllMediaFromListAnnonce(await _AnnonceServices.GetAllAnnoncesByCategorie(categorie)));
         }
 
         public async Task<Annonce> GetAnnonceById(int id)
         {
-            return await _MediaService.GetAllMediaFromAnnonce(_AnnonceServices.GetAnnonceById(id)); 
+            return  _AdresseServices.GetAllAdressesFromAnnonce( await _MediaService.GetAllMediaFromAnnonce(_AnnonceServices.GetAnnonceById(id))); 
         }
 
         public async Task<List<Annonce>> GetAnnoncesByCampusName(string campusName)
@@ -67,7 +67,7 @@ namespace Backend.Logic
             if (adresse == null)
                 throw new Exception("Aucune adresse trouvée pour ce nom de campus");
 
-            return await _MediaService.GetAllMediaFromListAnnonce(await _AnnonceServices.GetAnnoncesByIdAdresse(adresse.Id));
+            return  _AdresseServices.GetAllAdressesFromListAnnonces( await _MediaService.GetAllMediaFromListAnnonce(await _AnnonceServices.GetAnnoncesByIdAdresse(adresse.Id)));
         }
 
         public async Task<List<Annonce>> GetAnnoncesByEmail(String email)
@@ -77,7 +77,7 @@ namespace Backend.Logic
             {
                 throw new Exception("Membre non trouvé");
             }
-            return await _MediaService.GetAllMediaFromListAnnonce(await _AnnonceServices.GetAnnoncesByIdVendeur(membre.Id));
+            return _AdresseServices.GetAllAdressesFromListAnnonces( await _MediaService.GetAllMediaFromListAnnonce(await _AnnonceServices.GetAnnoncesByIdVendeur(membre.Id)));
         }
 
         public async Task<Annonce> UpdateAnnonce(Annonce annonce)
