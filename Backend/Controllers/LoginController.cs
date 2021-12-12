@@ -29,6 +29,7 @@ namespace Backend.Controllers
         public IActionResult Login(Membre membre)
         {
             Membre membreDB = _registerLogic.Login(membre);
+            if (membreDB.Valide == false) return Unauthorized("Vous n'avez pas encore valider votre compte");
             if (membreDB.Banni > DateTime.Now) return Unauthorized("Vous êtes banni");
 
             if (membreDB == null || membreDB.Email == null) return Unauthorized();
@@ -49,13 +50,19 @@ namespace Backend.Controllers
             Membre membreInscrit = await _registerLogic.Register(membre);
             if (membreInscrit == null) return BadRequest();
 
-            _mailLogic.Send(membreInscrit.Email);
+            _mailLogic.Send(membreInscrit);
 
-            var token = _jwtTokenManager.Authenticate(membreInscrit.Email, membreInscrit.MotDePasse);
-            if (string.IsNullOrEmpty(token)) return Unauthorized();
-            membreInscrit.Token = token;
             membreInscrit.MotDePasse = "";
             return Ok(membreInscrit);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("validate/{id}")]
+        public async Task<IActionResult> Validate(int id)
+        {
+            Membre membreDB = await _registerLogic.Validate(id);
+            if (membreDB == null) return NotFound("Compte à valider non trouvé");
+            return Ok("Le compte est maintenant validé !");
         }
 
     }

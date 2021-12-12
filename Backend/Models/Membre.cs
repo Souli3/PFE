@@ -19,6 +19,8 @@ namespace Backend.Models
         public bool Administrateur { get; set; }
         [Column("banni")]
         public DateTime? Banni { get; set; }
+        [Column("valide")]
+        public bool Valide { get; set; }
         [NotMapped]
         public Adresse Adresse { get; set; }
         [NotMapped]

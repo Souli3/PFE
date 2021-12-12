@@ -13,6 +13,7 @@ namespace Backend.Logic
     {
         public Task<Membre> Register(Membre membre);
         Membre Login(Membre membre);
+        Task<Membre> Validate(int id);
     }
     public class RegisterLogic : IRegisterLogic
     {
@@ -32,6 +33,14 @@ namespace Backend.Logic
             if (membre==null || membre.Email==null || _membreServices.GetMembreByEmail(membre.Email) != null) return null;
             Membre membreInscrit = await _registerServices.Register(membre);
             return membreInscrit;
+        }
+
+        public async Task<Membre> Validate(int id)
+        {
+            Membre membreDB = _membreServices.GetMembre(id);
+            if (membreDB == null) return null;
+            membreDB.Valide = true;
+            return await _membreServices.UpdateMembre(membreDB);
         }
     }
 }

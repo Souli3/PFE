@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Backend.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +11,27 @@ namespace Backend.Logic
 {
     public interface IMailLogic
     {
-        void Send(String email);
+        void Send(Membre membre);
     }
     public class MailLogic : IMailLogic
     {
         private readonly SmtpClient smtpClient;
-        public MailLogic()
+        private IConfiguration _configuration;
+        public MailLogic(IConfiguration configuration)
         {
+            _configuration = configuration;
+
             smtpClient = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
-                Credentials = new NetworkCredential("groupe11pfe@gmail.com", "groupe11pfe"),
+                Credentials = new NetworkCredential(_configuration["Domains:Mail"], _configuration["Domains:PasswMail"]),
                 EnableSsl = true,
             };
         }
 
-        public void Send(string email)
+        public void Send(Membre membre)
         {        
-            smtpClient.Send("groupe11pfe@gmail.com", email, "TestSubject", "TestBody");
+            smtpClient.Send(_configuration["Domains:Mail"], membre.Email, "TestSubject", "TestBody");
         }
     }
 }
