@@ -42,7 +42,11 @@ namespace Backend.Logic
             if (membre == null)
                 throw new Exception("Membre invalide");
             Annonce newAnnonce = await _AnnonceServices.AddAnnonce(annonce);
-            await _AnnonceAdresseService.AddAnnonceAdresse(newAnnonce.Id, membre.Campus_Id);
+            //await _AnnonceAdresseService.AddAnnonceAdresse(newAnnonce.Id, membre.Campus_Id);
+            if (annonce.adresses != null)
+            {
+                await _AnnonceAdresseService.AddAnnonceAdresses(annonce);
+            }
             return await _MediaService.GetAllMediaFromAnnonce(newAnnonce);
         }
 

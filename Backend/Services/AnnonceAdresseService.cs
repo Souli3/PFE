@@ -11,6 +11,7 @@ namespace Backend.Services
     {
         Task<AnnonceAdresse> AddAnnonceAdresse(int idAnnonce, int idAdresse);
         List<AnnonceAdresse> GetIdAnnonceByIdAdresse(int id);
+        Task AddAnnonceAdresses(Annonce annonce);
     }
     public class AnnonceAdresseService : IAnnonceAdresseService
     {
@@ -33,6 +34,17 @@ namespace Backend.Services
         public List<AnnonceAdresse> GetIdAnnonceByIdAdresse(int id)
         {
             return _dataContext.AnnonceAdresses.Where(annonceAdresse => annonceAdresse.Adresse_id == id).ToList();
+        }
+        public async Task AddAnnonceAdresses(Annonce annonce)
+        {
+            foreach (Adresse adresse in annonce.adresses)
+            {
+                if (!_dataContext.AnnonceAdresses.Any(x => x.Adresse_id == adresse.Id && x.Annonce_id == annonce.Id)) { 
+                    _dataContext.AnnonceAdresses.Add(new AnnonceAdresse() { Annonce_id = annonce.Id, Adresse_id = adresse.Id });
+                    await _dataContext.SaveChangesAsync();
+                }
+            }
+            
         }
     }
 }
