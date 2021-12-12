@@ -14,9 +14,10 @@ namespace Backend.Logic
         Task<List<Annonce>> GetAnnoncesByEmail(String email);
         Task<Annonce> AddAnnonce(Annonce annonce);
         Task<Annonce> GetAnnonceById(int id);
-        Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce);
+        Task<Annonce> UpdateAnnonce(Annonce annonce);
         Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie);
         Task<List<Annonce>> GetAnnoncesByCampusName(string campusName);
+        Task<Annonce> UpdateAnnonceAdmin(Annonce annonce);
     }
     public class AnnonceLogic : IAnnonceLogic
     {
@@ -79,7 +80,20 @@ namespace Backend.Logic
             return await _MediaService.GetAllMediaFromListAnnonce(await _AnnonceServices.GetAnnoncesByIdVendeur(membre.Id));
         }
 
-        public async Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce)
+        public async Task<Annonce> UpdateAnnonce(Annonce annonce)
+        {
+            if (annonce.Etat == 'V')
+            {
+                Annonce annonceDB = _AnnonceServices.GetAnnonceById(annonce.Id);
+                if(annonceDB.Etat == 'E')
+                {
+                    return null;
+                }
+            }
+            return await _AnnonceServices.UpdateAnnonce(annonce);
+        }
+
+        public async Task<Annonce> UpdateAnnonceAdmin(Annonce annonce)
         {
             return await _AnnonceServices.UpdateAnnonce(annonce);
         }
