@@ -118,7 +118,8 @@ namespace Backend.Controllers
         [HttpPut]
         public async Task<ActionResult<Annonce>> UpdateAnnonce(Annonce annonce)
         {
-            Annonce annonceDB = await _AnnonceLogic.UpdateAnnonce(annonce);
+            
+            Annonce annonceDB = await _AnnonceLogic.UpdateAnnonce(annonce, _jwtTokenManager.DecodeJWTToGetEmail(Request));
             if (annonceDB == null) return Unauthorized("Il faut être admin pour valider une annonce");
             return Ok(annonceDB);
         }
