@@ -15,7 +15,9 @@ namespace Backend.Data
         DbSet<Adresse> Adresses { get; set; }
         DbSet<Categorie> Categories { get; set; }
         DbSet<AnnonceAdresse> AnnonceAdresses { get; set; }
-        public DbSet<Media> Medias { get; set; }
+        DbSet<Media> Medias { get; set; }
+        DbSet<Discussion> Discussions { get; set; }
+        DbSet<Message> Messages { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }
