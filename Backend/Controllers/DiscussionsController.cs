@@ -23,24 +23,57 @@ namespace Backend.Controllers
             _jwtTokenManager = jwtTokenManager;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("messages/{id}")]
         public async Task<ActionResult<List<Message>>> GetAllMessagesFromIdDiscussion(int id)
         {
             String email = _jwtTokenManager.DecodeJWTToGetEmail(Request);
-            Membre valide = _DiscussionLogic.VerifyUserFromToken(id, email);
-            if (valide == null) return Unauthorized("Vous ne faites pas partie de cette conversation");
+            Membre valide;
+            try
+            {
+                valide = _DiscussionLogic.VerifyUserFromToken(id, email);
+            }
+            catch (Exception e)
+            {
+                return Unauthorized(e.Message);
+            }
             List<Message> messages = await _DiscussionLogic.GetAllMessagesFromIdDiscussion(id);
             return Ok(messages);
         }
 
-        [HttpPost]
+        [HttpPost("messages")]
         public async Task<ActionResult<List<Message>>> PostMessageToDiscussion(Message message)
         {
             String email = _jwtTokenManager.DecodeJWTToGetEmail(Request);
-            Membre valide = _DiscussionLogic.VerifyUserFromToken(message.Discussion_id, email);
-            if (valide == null) return Unauthorized("Vous ne faites pas partie de cette conversation");
+            Membre valide;
+            try
+            {
+                valide = _DiscussionLogic.VerifyUserFromToken(message.Discussion_id, email);
+            }
+            catch (Exception e)
+            {
+                return Unauthorized(e.Message);
+            }
             Message messageDB = await _DiscussionLogic.PostMessageToDiscussion(message, valide);
-            return Ok();
+            return Ok(messageDB);
+        }
+
+        [HttpGet("membres/{id}")]
+        public async Task<ActionResult<List<Message>>> GetDiscussionsFromIdMembre(int id)
+        {
+            List<Discussion> discussions = await _DiscussionLogic.GetDiscussionsFromIdMembre(id);
+            return Ok(discussions);
+        }
+
+        [HttpPost("membres/{id1}/{id2}")]
+        public async Task<ActionResult<List<Message>>> PostDiscussion(int id1, int id2)
+        {
+            String email = _jwtTokenManager.DecodeJWTToGetEmail(Request);
+            bool test1 = _DiscussionLogic.VerifyUserFromIdAndToken(email, id1);
+            bool test2 = _DiscussionLogic.VerifyUserFromIdAndToken(email, id2);
+            if (!test1 && !test2) return Unauthorized("Vous ne pouvez pas créer cette discussion pusique vous n'en faites pas partie");
+           
+            Discussion discussionDB = await _DiscussionLogic.PostDiscussion(id1, id2);
+            return Ok(discussionDB);
         }
     }
 }

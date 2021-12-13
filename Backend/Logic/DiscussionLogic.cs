@@ -12,6 +12,9 @@ namespace Backend.Logic
         Task<List<Message>> GetAllMessagesFromIdDiscussion(int id);
         Membre VerifyUserFromToken(int id, string email);
         Task<Message> PostMessageToDiscussion(Message message, Membre valide);
+        Task<List<Discussion>> GetDiscussionsFromIdMembre(int id);
+        Task<Discussion> PostDiscussion(int id1, int id2);
+        bool VerifyUserFromIdAndToken(string email, int id);
     }
     public class DiscussionLogic : IDiscussionLogic
     {
@@ -28,6 +31,19 @@ namespace Backend.Logic
             return await _DiscussionService.GetAllMessagesFromIdDiscussion(id);
         }
 
+        public async Task<List<Discussion>> GetDiscussionsFromIdMembre(int id)
+        {
+            return await _DiscussionService.GetDiscussionsFromIdMembre(id);
+        }
+
+        public async Task<Discussion> PostDiscussion(int id1, int id2)
+        {
+            Discussion discussionDB = _DiscussionService.GetDiscussionBetween2Members(id1, id2);
+            if (discussionDB == null)
+                discussionDB = await _DiscussionService.CreateDiscussion(id1, id2);
+            return discussionDB;
+        }
+
         public async Task<Message> PostMessageToDiscussion(Message message, Membre valide)
         {
             message.Envoyeur_id = valide.Id;
@@ -35,14 +51,22 @@ namespace Backend.Logic
             return await _DiscussionService.PostMessageToDiscussion(message);
         }
 
+        public bool VerifyUserFromIdAndToken(string email, int id)
+        {
+            Membre testMembre = _MembreServices.GetMembre(id);
+            if (testMembre.Email != email) return false;
+            return true;
+        }
+
         public Membre VerifyUserFromToken(int id, string email)
         {
             Discussion discussion = _DiscussionService.GetDiscussion(id);
+            if (discussion == null) throw new Exception("Cette discussion n'existe pas");
             Membre test1 = _MembreServices.GetMembre(discussion.Membre1_id);
-            Membre test2 = _MembreServices.GetMembre(discussion.Membre2_id);
             if (test1.Email == email) return test1;
-            else if (test2.Email == email) return test2;
-            else return null;
+            Membre test2 = _MembreServices.GetMembre(discussion.Membre2_id);
+            if (test2.Email == email) return test2;
+            else throw new Exception("Vous ne faites pas partie de cette discussion");
         }
     }
 }
