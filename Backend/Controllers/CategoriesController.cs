@@ -28,5 +28,38 @@ namespace Backend.Controllers
             List<Categorie> categories = await _CategorieLogic.GetAllCategories();
             return Ok(categories);
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut]
+        public async Task<ActionResult<Categorie>> PutCategorie(Categorie categorie)
+        {
+            Categorie categorieDB;
+            try
+            {
+                categorieDB = await _CategorieLogic.PutCategorie(categorie);
+            }
+            catch(Exception e)
+            {
+                return (Unauthorized(e.Message));
+            }
+
+            return Ok(categorieDB);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Categorie>> DeleteCategorie(int id)
+        {
+            Categorie categorieDB;
+            try
+            {
+                categorieDB = await _CategorieLogic.DeleteCategorie(id);
+            }
+            catch (Exception e)
+            {
+                return (Unauthorized(e.Message));
+            }
+            return Ok(categorieDB);
+        }
     }
 }
