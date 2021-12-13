@@ -15,5 +15,7 @@ namespace Backend.Models
         public String Nom { get; set; }
         [Column("sur_categorie_id")]
         public int? Sur_categorie_id { get; set; }
+        [Column("supprimee")]
+        public bool Suprimee { get; set; }
     }
 }

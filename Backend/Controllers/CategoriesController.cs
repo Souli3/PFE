@@ -30,15 +30,15 @@ namespace Backend.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut]
-        public async Task<ActionResult<Categorie>> PutCategorie(Categorie categorie)
+        [HttpPost]
+        public async Task<ActionResult<Categorie>> PostCategorie(Categorie categorie)
         {
             Categorie categorieDB;
             try
             {
-                categorieDB = await _CategorieLogic.PutCategorie(categorie);
+                categorieDB = await _CategorieLogic.PostCategorie(categorie);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return (Unauthorized(e.Message));
             }
@@ -47,19 +47,37 @@ namespace Backend.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Categorie>> DeleteCategorie(int id)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Categorie>> PutCategorie(Categorie categorie, int id)
         {
+            categorie.Id = id;
             Categorie categorieDB;
             try
             {
-                categorieDB = await _CategorieLogic.DeleteCategorie(id);
+                categorieDB = await _CategorieLogic.PutCategorie(categorie, id);
             }
             catch (Exception e)
             {
-                return (Unauthorized(e.Message));
+                return (NotFound(e.Message));
             }
+
             return Ok(categorieDB);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("delete/{id}")]
+        public async Task<ActionResult<Categorie>> DeleteCategorie(int id)
+        {
+            try
+            {
+                await _CategorieLogic.DeleteCategorie(id);
+            }
+            catch (Exception e)
+            {
+                return (NotFound(e.Message));
+            }
+
+            return Ok("La catégorie a bien été supprimée");
         }
     }
 }
