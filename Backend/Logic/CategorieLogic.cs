@@ -10,8 +10,9 @@ namespace Backend.Logic
     public interface ICategorieLogic
     {
         Task<List<Categorie>> GetAllCategories();
-        Task<Categorie> PutCategorie(Categorie categorie);
-        Task<Categorie> DeleteCategorie(int id);
+        Task<Categorie> PostCategorie(Categorie categorie);
+        Task DeleteCategorie(int id);
+        Task<Categorie> PutCategorie(Categorie categorie, int id);
     }
     public class CategorieLogic : ICategorieLogic
     {
@@ -25,7 +26,7 @@ namespace Backend.Logic
         {
             return await _CategorieServices.GetAllCategories();
         }
-        public async Task<Categorie> PutCategorie(Categorie categorie)
+        public async Task<Categorie> PostCategorie(Categorie categorie)
         {
             if(categorie.Sur_categorie_id != null)
             {
@@ -33,14 +34,29 @@ namespace Backend.Logic
                 if (surCategorie.Sur_categorie_id != null) 
                     throw new Exception("La sur catégorie entrée n'est pas une sur catégorie");
             }
-            return await _CategorieServices.PutCategorie(categorie);
+            return await _CategorieServices.PostCategorie(categorie);
         }
-        public async Task<Categorie> DeleteCategorie(int id)
+        public async Task DeleteCategorie(int id)
         {
             Categorie categorieDB = _CategorieServices.GetCategorie(id);
-            if (categorieDB == null)
-                throw new Exception("Il n'y a pas de catégorie pour cet ID");
-            return await _CategorieServices.DeleteCategorie(categorieDB);
+            if(categorieDB == null) throw new Exception("La catégorie à supprimer n'a pas été trouvée");
+            if (categorieDB.Sur_categorie_id == null)
+            {
+                await _CategorieServices.DeleteAllSubCategorie(id);
+                await _CategorieServices.DeleteCategorie(id);
+            }
+            else 
+            {
+                await _CategorieServices.DeleteCategorie(id);
+            }
+               
+        }
+
+        public Task<Categorie> PutCategorie(Categorie categorie, int id)
+        {
+            Categorie categorieDB = _CategorieServices.GetCategorie(id);
+            if (categorieDB == null) throw new Exception("La catégorie à modifier n'a pas été trouvée");
+            return _CategorieServices.PutCategorie(categorie);
         }
     }
 }
