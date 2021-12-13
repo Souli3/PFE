@@ -48,7 +48,9 @@ namespace Backend
             }
             //services.AddCors();
             //services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithMethods("GET")));
-            services.AddScoped<IDataContext>(porvider => porvider.GetService<DataContext>());
+            
+            services.AddDbContext<IDataContext, DataContext>();
+            //services.AddSingleton<IDataContext>(porvider => porvider.GetService<DataContext>());
             services.AddScoped<IMembresLogic, MemberLogic>();
             services.AddScoped<IRegisterLogic, RegisterLogic>();
             services.AddScoped<IRegisterServices, RegisterServices>();
