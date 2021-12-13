@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-    [Table("discussions", Schema = "pfe")]
+    [Table("messages", Schema = "pfe")]
     public class Message
     {
         [Column("message_id")]
