@@ -15,7 +15,7 @@ namespace Backend.Services
         Task<Categorie> PostCategorie(Categorie categorie);
         Task<Categorie> DeleteCategorie(int id);
         Task<Categorie> PutCategorie(Categorie categorie);
-        Task DeleteAllSubCategorie(int sur_categorie_id);
+        Task<List<Categorie>> DeleteAllSubCategorie(int sur_categorie_id);
     }
     public class CategorieService : ICategorieService
     {
@@ -39,13 +39,6 @@ namespace Backend.Services
             await _dataContext.SaveChangesAsync();
             return categorieDB;
         }
-        public async Task<Categorie> DeleteCategorie(int id)
-        {
-            Categorie categorieDB = _dataContext.Categories.Where(categorie => categorie.Id == id).FirstOrDefault();
-            categorieDB.Suprimee = true;
-            await _dataContext.SaveChangesAsync();
-            return categorieDB;
-        }
 
         public async Task<Categorie> PutCategorie(Categorie categorie)
         {
@@ -56,7 +49,15 @@ namespace Backend.Services
             return categorieDB;
         }
 
-        public async Task DeleteAllSubCategorie(int sur_categorie_id)
+        public async Task<Categorie> DeleteCategorie(int id)
+        {
+            Categorie categorieDB = _dataContext.Categories.Where(categorie => categorie.Id == id).FirstOrDefault();
+            categorieDB.Suprimee = true;
+            await _dataContext.SaveChangesAsync();
+            return categorieDB;
+        }
+
+        public async Task<List<Categorie>> DeleteAllSubCategorie(int sur_categorie_id)
         {
             List<Categorie> categories = await _dataContext.Categories.Where(c => c.Sur_categorie_id == sur_categorie_id).ToListAsync();  
             foreach(Categorie c in categories)
@@ -64,6 +65,7 @@ namespace Backend.Services
                 c.Suprimee = true;
             }
             await _dataContext.SaveChangesAsync();
+            return categories;
         }
     }
 }

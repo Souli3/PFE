@@ -39,7 +39,7 @@ namespace Backend.Controllers
             m.MotDePasse = "";
             return Ok(m);
         }
-        [HttpGet("GetMembre/email")]
+        [HttpPost("GetMembre/email")]
         public ActionResult<int> GetMemberByEmail(Membre membre)
         {
             Membre m = _MembreLogic.GetMembre(membre.Email);
@@ -80,6 +80,21 @@ namespace Backend.Controllers
                 return NotFound(e.Message);
             }
             return Ok(bannedMember);
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpPut("admin/{id}")]
+        public async Task<ActionResult<Membre>> PutAdmin(int id)
+        {
+            Membre admin;
+            try
+            {
+                admin = await _MembreLogic.PutAdmin(id);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+            return Ok(admin);
         }
     }
 }
