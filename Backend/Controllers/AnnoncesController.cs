@@ -48,6 +48,7 @@ namespace Backend.Controllers
         public async Task<ActionResult<Annonce>> GetAnnonceById(int id)
         {
             Annonce annonce = await _AnnonceLogic.GetAnnonceById(id);
+            if (annonce == null) return NotFound("Annonce introuvable !");
             return Ok(annonce);
         }
 
@@ -72,6 +73,7 @@ namespace Backend.Controllers
         public async Task<ActionResult<List<Annonce>>> GetAllAnnoncesByCategorie(Categorie categorie)
         {
             List<Annonce> annonces = await _AnnonceLogic.GetAllAnnoncesByCategorie(categorie);
+            if (annonces == null) return NotFound("Aucune annonce trouvé");
             return Ok(annonces);
         }
 

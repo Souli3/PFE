@@ -61,6 +61,7 @@ namespace Backend.Controllers
         public async Task<ActionResult<List<Message>>> GetDiscussionsFromIdMembre(int id)
         {
             List<Discussion> discussions = await _DiscussionLogic.GetDiscussionsFromIdMembre(id);
+            if(discussions == null) return NotFound("Discussion inexistante !");
             return Ok(discussions);
         }
 

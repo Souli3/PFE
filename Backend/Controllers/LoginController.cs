@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Backend.Controllers
@@ -31,14 +32,14 @@ namespace Backend.Controllers
         {
             Membre membreDB = _registerLogic.Login(membre);
             if (membreDB.Valide == false) return Unauthorized("Vous n'avez pas encore valider votre compte");
-            if (membreDB.Banni > DateTime.Now) return Unauthorized("Vous² êtes banni");
+            if (membreDB.Banni > DateTime.Now) return Unauthorized("Vous êtes banni");
 
             if (membreDB == null || membreDB.Email == null) return Unauthorized();
 
             if (!BCrypt.Net.BCrypt.Verify(membre.MotDePasse, membreDB.MotDePasse)) return Unauthorized();
            
             var token = _jwtTokenManager.Authenticate(membre.Email, membre.MotDePasse);
-            if (string.IsNullOrEmpty(token)) return Unauthorized();
+            if (string.IsNullOrEmpty(token)) return Unauthorized("Compte inexistant !");
             membreDB.Token = token;
             membreDB.MotDePasse = "";
             return Ok(membreDB);
@@ -47,9 +48,11 @@ namespace Backend.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(Membre membre)
         {
+            if (membre == null || membre.Email=="" || membre.MotDePasse=="") return BadRequest("Veuillez rentrer un email et mot de passe valide ");
+            if (!Regex.IsMatch(membre.Email, @"^[A-Za-z]+[\.][A-Za-z]+[@]([A-Za-z]+[\.]){0,1}(vinci)[\.][a-z]{2,3}$")) return BadRequest("Email invalide");
             membre.MotDePasse = BCrypt.Net.BCrypt.HashPassword(membre.MotDePasse);
             Membre membreInscrit = await _registerLogic.Register(membre);
-            if (membreInscrit == null) return BadRequest();
+            if (membreInscrit == null) return BadRequest("Cette email existe deja !");
 
             _mailLogic.Send(membreInscrit);
             return Ok("Nous vous avons envoyé un mail afin de valider votre compte");
