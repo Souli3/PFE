@@ -53,7 +53,7 @@ namespace Backend.Logic
                 deletedCategories = new List<Categorie>();
                 deletedCategories.Add(await _CategorieServices.DeleteCategorie(id));
             }
-            _AnnonceServices.DeleteCategories(deletedCategories);
+            await _AnnonceServices.DeleteCategories(deletedCategories);
         }
 
         public Task<Categorie> PutCategorie(Categorie categorie, int id)

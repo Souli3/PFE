@@ -18,7 +18,7 @@ namespace Backend.Services
         Task<Annonce> UpdateAnnonce(Annonce annonce);
         Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie);
         Task<List<Annonce>> GetAnnoncesByIdAdresse(int idAdresse);
-        void DeleteCategories(List<Categorie> deletedCategories);
+        Task DeleteCategories(List<Categorie> deletedCategories);
     }
     public class AnnonceService : IAnnonceServices
     {
@@ -35,11 +35,18 @@ namespace Backend.Services
             return newAnnonce;
         }
 
-        public async void DeleteCategories(List<Categorie> deletedCategories)
+        public async Task DeleteCategories(List<Categorie> deletedCategories)
         {
-            List<Annonce> annonces = await _dataContext.Annonces.Where(a => deletedCategories.Any(c => c.Id == a.Categorie_id)).ToListAsync();
-            foreach (Annonce a in annonces) a.Categorie_id = null;
-            await _dataContext.SaveChangesAsync();
+            List<Annonce> annoncesDB = new List<Annonce>();
+            foreach (Categorie c in deletedCategories)
+            {
+                annoncesDB = _dataContext.Annonces.Where(a => a.Categorie_id == c.Id).ToList(); 
+                foreach (Annonce a in annoncesDB)
+                {
+                    a.Categorie_id = null;
+                }
+                await _dataContext.SaveChangesAsync();
+            }
         }
 
         public async Task<List<Annonce>> GetAllAnnoncesAsync()
