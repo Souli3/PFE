@@ -36,7 +36,7 @@ namespace Backend.Controllers
 
             if (membreDB == null || membreDB.Email == null) return Unauthorized();
 
-            if (!BCrypt.Net.BCrypt.Verify(membre.MotDePasse, membreDB.MotDePasse)) return Unauthorized();
+            if (!BCrypt.Net.BCrypt.Verify(membre.MotDePasse, membreDB.MotDePasse)) return Unauthorized("Email ou mot de passe incorrect");
            
             var token = _jwtTokenManager.Authenticate(membre.Email, membre.MotDePasse);
             if (string.IsNullOrEmpty(token)) return Unauthorized("Compte inexistant !");
