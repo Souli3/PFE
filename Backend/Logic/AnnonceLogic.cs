@@ -11,6 +11,7 @@ namespace Backend.Logic
     public interface IAnnonceLogic
     {
         Task<List<Annonce>> GetAllAnnonces();
+        Task<List<Annonce>> GetAllAnnoncesStatusE();
         Task<List<Annonce>> GetAnnoncesByEmail(String email);
         Task<Annonce> AddAnnonce(Annonce annonce);
         Task<Annonce> GetAnnonceById(int id);
@@ -58,6 +59,11 @@ namespace Backend.Logic
         public async Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie)
         {
             return  _AdresseServices.GetAllAdressesFromListAnnonces( await _MediaService.GetAllMediaFromListAnnonce(await _AnnonceServices.GetAllAnnoncesByCategorie(categorie)));
+        }
+
+        public async Task<List<Annonce>> GetAllAnnoncesStatusE()
+        {
+            return _AdresseServices.GetAllAdressesFromListAnnonces(await _MediaService.GetAllMediaFromListAnnonce(await _AnnonceServices.GetAllAnnoncesStatusE()));
         }
 
         public async Task<Annonce> GetAnnonceById(int id)

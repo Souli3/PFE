@@ -43,6 +43,12 @@ namespace Backend.Controllers
             List<Annonce> annonces = await _AnnonceLogic.GetAllAnnonces();
             return Ok(annonces);
         }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("GetAllAnnoncesStatusE")]
+        public async Task<ActionResult<List<Annonce>>> GetAllAnnoncesStatusE()
+        {
+            return Ok(await _AnnonceLogic.GetAllAnnoncesStatusE());
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Annonce>> GetAnnonceById(int id)
