@@ -17,9 +17,11 @@ namespace Backend.Logic
     public class CategorieLogic : ICategorieLogic
     {
         private ICategorieService _CategorieServices;
-        public CategorieLogic(ICategorieService CategorieServices)
+        private IAnnonceServices _AnnonceServices;
+        public CategorieLogic(ICategorieService CategorieServices, IAnnonceServices AnnonceServices)
         {
             _CategorieServices = CategorieServices;
+            _AnnonceServices = AnnonceServices;
         }
 
         public async Task<List<Categorie>> GetAllCategories()
@@ -40,16 +42,18 @@ namespace Backend.Logic
         {
             Categorie categorieDB = _CategorieServices.GetCategorie(id);
             if(categorieDB == null) throw new Exception("La catégorie à supprimer n'a pas été trouvée");
+            List<Categorie> deletedCategories;
             if (categorieDB.Sur_categorie_id == null)
             {
-                await _CategorieServices.DeleteAllSubCategorie(id);
-                await _CategorieServices.DeleteCategorie(id);
+                deletedCategories = await _CategorieServices.DeleteAllSubCategorie(id);
+                deletedCategories.Add(await _CategorieServices.DeleteCategorie(id));
             }
             else 
             {
-                await _CategorieServices.DeleteCategorie(id);
+                deletedCategories = new List<Categorie>();
+                deletedCategories.Add(await _CategorieServices.DeleteCategorie(id));
             }
-               
+            _AnnonceServices.DeleteCategories(deletedCategories);
         }
 
         public Task<Categorie> PutCategorie(Categorie categorie, int id)
