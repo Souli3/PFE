@@ -39,6 +39,12 @@ namespace Backend.Controllers
             m.MotDePasse = "";
             return Ok(m);
         }
+        [HttpGet("GetMembre/email")]
+        public ActionResult<int> GetMemberByEmail(Membre membre)
+        {
+            Membre m = _MembreLogic.GetMembre(membre.Email);
+            return Ok(m.Id);
+        }
         [HttpPut("UpdateMembre")]
         public async Task<ActionResult<Membre>> UpdateMember(Membre membre)
         {
