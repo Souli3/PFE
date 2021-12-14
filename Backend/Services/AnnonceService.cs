@@ -36,12 +36,12 @@ namespace Backend.Services
 
         public async Task<List<Annonce>> GetAllAnnoncesAsync()
         {
-            return await _dataContext.Annonces.OrderBy(annonce => annonce.Id).ToListAsync();
+            return await _dataContext.Annonces.Where(x=>x.Etat=='V' || x.Etat == 'R' || x.Etat == 'T').OrderBy(annonce => annonce.Id).ToListAsync();
         }
 
         public async Task<List<Annonce>> GetAllAnnoncesByCategorie(Categorie categorie)
         {
-            return await _dataContext.Annonces.Where(annonce => annonce.Categorie_id == categorie.Id).OrderBy(annonce => annonce.Id).ToListAsync();
+            return await _dataContext.Annonces.Where(annonce => annonce.Categorie_id == categorie.Id && (annonce.Etat == 'V' || annonce.Etat == 'R' || annonce.Etat == 'T')).OrderBy(annonce => annonce.Id).ToListAsync();
         }
 
         public Annonce GetAnnonceById(int id)
@@ -52,7 +52,7 @@ namespace Backend.Services
         public async Task<List<Annonce>> GetAnnoncesByIdAdresse(int idAdresse)
         {
             return await _dataContext.Annonces
-                .FromSqlRaw("SELECT a.* FROM pfe.annonces a, pfe.annonces_adresses aa WHERE a.Annonce_id = aa.Annonce_id AND aa.Adresse_id = {0}", idAdresse)
+                .FromSqlRaw("SELECT a.* FROM pfe.annonces a, pfe.annonces_adresses aa WHERE a.Annonce_id = aa.Annonce_id AND aa.Adresse_id = {0} && (a.Etat=='V' || a.Etat == 'R' || a.Etat == 'T')", idAdresse)
                 .ToListAsync();
         }
 
