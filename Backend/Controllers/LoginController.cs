@@ -49,7 +49,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> Register(Membre membre)
         {
             if (membre == null || membre.Email=="" || membre.MotDePasse=="") return BadRequest("Veuillez rentrer un email et mot de passe valide ");
-            if (!Regex.IsMatch(membre.Email, @"^[A-Za-z]+[\.][A-Za-z]+[@]([A-Za-z]+[\.]){0,1}(vinci)[\.][a-z]{2,3}$")) return BadRequest("Email invalide");
+            if (!Regex.IsMatch(membre.Email, @"^[A-Za-z]+[\.][A-Za-z]+[@]((student)+[\.]){0,1}(vinci)[\.][a-z]{2,3}$")) return BadRequest("Email invalide");
             membre.MotDePasse = BCrypt.Net.BCrypt.HashPassword(membre.MotDePasse);
             Membre membreInscrit = await _registerLogic.Register(membre);
             if (membreInscrit == null) return BadRequest("Cette email existe deja !");
