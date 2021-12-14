@@ -39,7 +39,7 @@ namespace Backend.Controllers
             m.MotDePasse = "";
             return Ok(m);
         }
-        [HttpGet("GetMembre/email")]
+        [HttpPost("GetMembre/email")]
         public ActionResult<int> GetMemberByEmail(Membre membre)
         {
             Membre m = _MembreLogic.GetMembre(membre.Email);
