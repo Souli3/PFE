@@ -15,6 +15,7 @@ namespace Backend.Logic
         Task<Membre> UpdateMember(Membre membre);
         Task<Membre> BanMembre(int id, int time);
         Membre GetMembreById(int id);
+        Task<Membre> PutAdmin(int id);
     }
     public class MemberLogic : IMembresLogic
     {
@@ -54,6 +55,13 @@ namespace Backend.Logic
         public Membre GetMembreById(int id)
         {
             return _MembreServices.GetMembre(id);
+        }
+
+        public async Task<Membre> PutAdmin(int id)
+        {
+            Membre membre = await _MembreServices.PutAdmin(id);
+            if (membre == null) throw new Exception("Membre non trouvé");
+            return membre;
         }
 
         public async Task<Membre> UpdateMember(Membre membre)
