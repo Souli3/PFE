@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Backend.Controllers
@@ -26,11 +27,11 @@ namespace Backend.Controllers
         }
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login(Membre membre)
+        public async Task<IActionResult> Login(Membre membre)
         {
             Membre membreDB = _registerLogic.Login(membre);
             if (membreDB.Valide == false) return Unauthorized("Vous n'avez pas encore valider votre compte");
-            if (membreDB.Banni > DateTime.Now) return Unauthorized("Vous êtes banni");
+            if (membreDB.Banni > DateTime.Now) return Unauthorized("Vous² êtes banni");
 
             if (membreDB == null || membreDB.Email == null) return Unauthorized();
 
