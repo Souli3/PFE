@@ -81,5 +81,20 @@ namespace Backend.Controllers
             }
             return Ok(bannedMember);
         }
+        [Authorize(Roles = "Admin")]
+        [HttpPut("admin/{id}")]
+        public async Task<ActionResult<Membre>> PutAdmin(int id)
+        {
+            Membre admin;
+            try
+            {
+                admin = await _MembreLogic.PutAdmin(id);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+            return Ok(admin);
+        }
     }
 }

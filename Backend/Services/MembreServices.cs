@@ -16,6 +16,7 @@ namespace Backend.Services
         Membre GetMembreByEmail(string email);
         Task<Membre> UpdateMembre(Membre membre);
         Task<Membre> BanMembre(Membre membre, int time);
+        Task<Membre> PutAdmin(int id);
     }
     public class MembreServices : IMembreServices
     {
@@ -75,6 +76,15 @@ namespace Backend.Services
             if(membre == null) return null;
             membre.Adresse = _dataContext.Adresses.Where(x=> x.Id==membre.Campus_Id).FirstOrDefault();
             return membre;            
+        }
+
+        public async Task<Membre> PutAdmin(int id)
+        {
+            Membre membreDB = this.GetMembre(id);
+            membreDB.Administrateur = true;
+
+            await _dataContext.SaveChangesAsync();
+            return membreDB;
         }
 
         public async Task<Membre> UpdateMembre(Membre membre)
