@@ -89,8 +89,8 @@ namespace Backend.Services
             annonceDB.Description = annonce.Description;
             annonceDB.Prix = annonce.Prix;
             annonceDB.Etat = annonce.Etat;
-            annonceDB.Genre = annonce.Genre;
-            annonceDB.Categorie_id = annonce.Categorie_id;
+            if(annonceDB.Genre != null) annonceDB.Genre = annonce.Genre;
+            if(annonceDB.Categorie_id != null) annonceDB.Categorie_id = annonce.Categorie_id;
             await _dataContext.SaveChangesAsync();
             return annonceDB;
         }
