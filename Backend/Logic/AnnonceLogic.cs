@@ -104,7 +104,7 @@ namespace Backend.Logic
         public async Task<Annonce> UpdateAnnonce(Annonce annonce, string emailVendeurDecoder)
         {
 
-            if(annonce.Vendeur_id != _MembreServices.GetMembreByEmail(emailVendeurDecoder).Id)
+            if (annonce.Vendeur_id != _MembreServices.GetMembreByEmail(emailVendeurDecoder).Id || annonce.Titre == "" || annonce.Description == "" || annonce.Prix ==null  || annonce.Prix < 0 || !annonce.Etat.HasValue || annonce.Categorie_id==null)
             {
                 return null;
             }
@@ -115,6 +115,10 @@ namespace Backend.Logic
                 {
                     return null;
                 }
+            }
+            if(annonce.adressesToAdd!=null &&  annonce.adressesToAdd.Length>0)
+            {
+                await _AdresseServices.UpdateAdresseAnnonce(annonce);
             }
             return await _AnnonceServices.UpdateAnnonce(annonce);
         }
