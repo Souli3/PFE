@@ -3,6 +3,7 @@ using Backend.Logic;
 using Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PusherServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +55,11 @@ namespace Backend.Controllers
                 return Unauthorized(e.Message);
             }
             Message messageDB = await _DiscussionLogic.PostMessageToDiscussion(message, valide);
+            var options = new PusherOptions();
+            options.Cluster = "eu";
+
+            var pusher = new Pusher("1315901", "93dc2573318267ee5994", "4f35b2a34b5a87cecc75", options);
+            var result = await pusher.TriggerAsync("chat", "message", messageDB);
             return Ok(messageDB);
         }
 
