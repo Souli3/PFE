@@ -104,7 +104,7 @@ namespace Backend.Logic
         public async Task<Annonce> UpdateAnnonce(Annonce annonce, string emailVendeurDecoder)
         {
 
-            if (annonce.Vendeur_id != _MembreServices.GetMembreByEmail(emailVendeurDecoder).Id || annonce.Titre == "" || annonce.Description == "" || annonce.Prix ==null  || annonce.Prix < 0 || !annonce.Etat.HasValue || annonce.Categorie_id==null)
+            if (annonce.Vendeur_id != _MembreServices.GetMembreByEmail(emailVendeurDecoder).Id || annonce.Titre == "" || annonce.Description == "" || annonce.Prix ==null  || annonce.Prix < 0 || !annonce.Etat.HasValue )
             {
                 return null;
             }
