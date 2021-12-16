@@ -31,10 +31,10 @@ namespace Backend.Controllers
         public async Task<IActionResult> Login(Membre membre)
         {
             Membre membreDB = _registerLogic.Login(membre);
+            if (membreDB == null || membreDB.Email == null) return Unauthorized("Le compte est inexistant");
             if (membreDB.Valide == false) return Unauthorized("Vous n'avez pas encore valider votre compte");
             if (membreDB.Banni > DateTime.Now) return Unauthorized("Vous êtes banni");
 
-            if (membreDB == null || membreDB.Email == null) return Unauthorized();
 
             if (!BCrypt.Net.BCrypt.Verify(membre.MotDePasse, membreDB.MotDePasse)) return Unauthorized("Email ou mot de passe incorrect");
            
