@@ -58,14 +58,7 @@ namespace Backend.Controllers
             List<Membre> pes = await _MembreLogic.GetAllMembres();
             return Ok(pes);
         }
-        [HttpPost]
-        public async Task<ActionResult> AddPersonne(Membre Membre)
-        {
-            Membre p = Membre;
-            await _MembreLogic.AddMembre(Membre);
-
-            return Ok();
-        }
+        
         [Authorize(Roles = "Admin")]
         [HttpPut("ban/{id}/{time}")]
         public async Task<ActionResult<Membre>> BanMembre(int id, int time)

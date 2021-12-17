@@ -11,7 +11,6 @@ namespace Backend.Logic
     {
         Membre GetMembre(string email);
         Task<List<Membre>> GetAllMembres();
-        Task AddMembre(Membre Membres);
         Task<Membre> UpdateMember(Membre membre);
         Task<Membre> BanMembre(int id, int time);
         Membre GetMembreById(int id);
@@ -24,10 +23,7 @@ namespace Backend.Logic
         {
             _MembreServices = MembreServices;
         }
-        public async Task AddMembre(Membre Membres)
-        {
-            await _MembreServices.AddMembre(Membres);
-        }
+        
 
         public async Task<Membre> BanMembre(int id, int time)
         {

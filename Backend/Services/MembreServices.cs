@@ -12,7 +12,6 @@ namespace Backend.Services
     {
         Membre GetMembre(int id);
         Task<List<Membre>> GetAllMembresAsync();
-        Task AddMembre(Membre Membre);
         Membre GetMembreByEmail(string email);
         Task<Membre> UpdateMembre(Membre membre);
         Task<Membre> BanMembre(Membre membre, int time);
@@ -24,14 +23,6 @@ namespace Backend.Services
         public MembreServices(IDataContext dataContext)
         {
             _dataContext = dataContext;
-        }
-
-        public async Task AddMembre(Membre membre)
-        {
-            
-            _dataContext.Membres.Add(membre);
-            await _dataContext.SaveChangesAsync();
-
         }
 
         public async Task<Membre> BanMembre(Membre membre, int time)
